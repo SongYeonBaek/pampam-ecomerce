@@ -1,5 +1,6 @@
 package com.example.pampam.member.service;
 
+import com.example.pampam.common.BaseResponse;
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.model.request.*;
@@ -35,7 +36,7 @@ public class MemberService implements UserDetailsService {
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
 
-    public SuccessConsumerSignupRes consumerSignup(ConsumerSignupReq consumerSignupReq) {
+    public BaseResponse<Object> consumerSignup(ConsumerSignupReq consumerSignupReq) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
             return null;
         }
@@ -77,17 +78,10 @@ public class MemberService implements UserDetailsService {
                 .status(consumer.getStatus())
                 .build();
 
-        SuccessConsumerSignupRes successConsumerSignupRes = SuccessConsumerSignupRes.builder()
-                .isSuccess(true)
-                .code(1000)
-                .message("요청성공")
-                .result(consumerSignupRes)
-                .success(true)
-                .build();
-        return successConsumerSignupRes;
+        return BaseResponse.successResponse("요청 성공", consumerSignupRes);
 
     }
-    public SuccessSellerSignupRes sellerSignup(SellerSignupReq sellerSignupReq) {
+    public BaseResponse<SellerSignupRes> sellerSignup(SellerSignupReq sellerSignupReq) {
 
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
             return null;
@@ -125,18 +119,11 @@ public class MemberService implements UserDetailsService {
                 .sellerBusinessNumber(seller.getSellerBusinessNumber())
                 .build();
 
-        SuccessSellerSignupRes successSellerSignupRes = SuccessSellerSignupRes.builder()
-                .isSuccess(true)
-                .code(1000)
-                .message("요청성공")
-                .result(sellerSignupRes)
-                .success(true)
-                .build();
-        return successSellerSignupRes;
+        return BaseResponse.successResponse("요청 성공", sellerSignupRes);
 
     }
 
-    public SuccessConsumerLoginRes consumerLogin(ConsumerLoginReq consumerLoginReq) {
+    public BaseResponse<Object> consumerLogin(ConsumerLoginReq consumerLoginReq) {
         Optional<Consumer> consumer = consumerRepository.findByEmail(consumerLoginReq.getEmail());
 
         if (consumer.isPresent()) {
@@ -146,24 +133,15 @@ public class MemberService implements UserDetailsService {
                         .token(JwtUtils.generateAccessToken(consumer.get(), secretKey, expiredTimeMs))
                         .build();
 
-                SuccessConsumerLoginRes successConsumerLoginRes = SuccessConsumerLoginRes.builder()
-                        .isSuccess(true)
-                        .code(1000)
-                        .message("요청 성공")
-                        .result(consumerLoginRes)
-                        .success(true)
-                        .build();
-
-
-                return successConsumerLoginRes;
+                return BaseResponse.successResponse("요청 성공", consumerLoginRes);
             }else {
-                return null;
+                return BaseResponse.failResponse("에러 발생");
             }
         }
         return null;
     }
 
-    public SuccessSellerLoginRes sellerLogin(SellerLoginReq sellerLoginReq) {
+    public BaseResponse<SellerLoginRes> sellerLogin(SellerLoginReq sellerLoginReq) {
         Optional<Seller> seller = sellerRepository.findByEmail(sellerLoginReq.getEmail());
 
         if (seller.isPresent()) {
@@ -172,24 +150,15 @@ public class MemberService implements UserDetailsService {
                 SellerLoginRes sellerLoginRes = SellerLoginRes.builder()
                         .token(JwtUtils.generateAccessToken(seller.get(), secretKey, expiredTimeMs))
                         .build();
-
-                SuccessSellerLoginRes successSellerLoginRes = SuccessSellerLoginRes.builder()
-                        .isSuccess(true)
-                        .code(1000)
-                        .message("요청 성공")
-                        .result(sellerLoginRes)
-                        .success(true)
-                        .build();
-
-                return  successSellerLoginRes;
+                return  BaseResponse.successResponse("요청 성공", sellerLoginRes);
             }else {
-                return null;
+                return BaseResponse.failResponse("에러 발생");
             }
         }
         return null;
     }
 
-    public SuccessConsumerUpdateRes consumerUpdate(ConsumerUpdateReq consumerUpdateReq) {
+    public BaseResponse<ConsumerUpdateRes> consumerUpdate(ConsumerUpdateReq consumerUpdateReq) {
         Optional<Consumer> result = consumerRepository.findByEmail(consumerUpdateReq.getEmail());
         Consumer consumer = null;
         if (result.isPresent()) {
@@ -219,21 +188,13 @@ public class MemberService implements UserDetailsService {
                     .status(consumer.getStatus())
                     .build();
 
-            SuccessConsumerUpdateRes successConsumerUpdateRes = SuccessConsumerUpdateRes.builder()
-                    .isSuccess(true)
-                    .code(1000)
-                    .message("요청 성공")
-                    .result(consumerUpdateRes)
-                    .success(true)
-                    .build();
-
-            return successConsumerUpdateRes;
+            return BaseResponse.successResponse("요청 성공", consumerUpdateRes);
         } else {
-            return null;
+            return BaseResponse.failResponse("에러 발생");
         }
     }
 
-    public SuccessSellerUpdateRes sellerUpdate(SellerUpdateReq sellerUpdateReq) {
+    public BaseResponse<SellerUpdateRes> sellerUpdate(SellerUpdateReq sellerUpdateReq) {
         Optional<Seller> result = sellerRepository.findByEmail(sellerUpdateReq.getEmail());
         Seller seller = null;
         if (result.isPresent()) {
@@ -263,23 +224,15 @@ public class MemberService implements UserDetailsService {
                     .status(seller.getStatus())
                     .build();
 
-            SuccessSellerUpdateRes successSellerUpdateRes = SuccessSellerUpdateRes.builder()
-                    .success(true)
-                    .code(1000)
-                    .message("요청 성공")
-                    .result(sellerUpdateRes)
-                    .isSuccess(true)
-                    .build();
-
-            return successSellerUpdateRes;
+            return BaseResponse.successResponse("요청 성공", sellerUpdateRes);
 
         } else {
-            return null;
+            return BaseResponse.failResponse("에러 발생");
         }
 
     }
 
-    public SuccessMemberDeleteRes delete(MemberDeleteReq memberDeleteReq){
+    public BaseResponse<String> delete(MemberDeleteReq memberDeleteReq){
         if (memberDeleteReq.getAuthority().equals("CONSUMER")){
             Optional<Consumer> result = consumerRepository.findByEmail(memberDeleteReq.getEmail());
 
@@ -287,16 +240,9 @@ public class MemberService implements UserDetailsService {
                 consumerRepository.delete(Consumer.builder()
                         .consumerIdx(result.get().getConsumerIdx()).build());
 
-                SuccessMemberDeleteRes successMemberDeleteRes = SuccessMemberDeleteRes.builder()
-                        .isSuccess(true)
-                        .code(1000)
-                        .message("요청성공")
-                        .success(true)
-                        .build();
-
-                return successMemberDeleteRes;
+                return BaseResponse.successResponse("요청 성공", result.get().getEmail());
             }else {
-                return null;
+                return BaseResponse.failResponse("요청 성공");
             }
 
         }else if (memberDeleteReq.getAuthority().equals("SELLER")){
@@ -306,17 +252,10 @@ public class MemberService implements UserDetailsService {
                 sellerRepository.delete(Seller.builder()
                         .sellerIdx(result.get().getSellerIdx()).build());
 
-                SuccessMemberDeleteRes successMemberDeleteRes = SuccessMemberDeleteRes.builder()
-                        .isSuccess(true)
-                        .code(1000)
-                        .message("요청성공")
-                        .success(true)
-                        .build();
-
-                return successMemberDeleteRes;
+                return BaseResponse.successResponse("요청 성공", result.get().getEmail());
 
             }else {
-                return null;
+                return BaseResponse.failResponse("에러 발생");
             }
         } else {
             return null;
