@@ -13,12 +13,15 @@ import com.example.pampam.product.model.response.PostProductResgisterRes;
 import com.example.pampam.product.repository.ProductImageRepository;
 import com.example.pampam.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -141,6 +144,7 @@ public class ProductService {
         return null;
     }
 
+    @Transactional
     public void update(String email, PatchProductUpdateReq patchProductUpdateReq){
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
@@ -151,13 +155,27 @@ public class ProductService {
 
         Optional<Product> result = productRepository.findById(patchProductUpdateReq.getId());
         if (result.isPresent()) {
-            Product product = result.get();
-            product.setProductName(patchProductUpdateReq.getProductName());
-            product.setPrice(patchProductUpdateReq.getPrice());
-            product.setSalePrice(patchProductUpdateReq.getSalePrice());
-            product.setProductInfo(patchProductUpdateReq.getProductInfo());
-            product.setImages(patchProductUpdateReq.getProductImages());
-            productRepository.save(product);
+            Product existingProduct = productRepository.findById(patchProductUpdateReq.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + patchProductUpdateReq.getId()));
+
+            // DTO에서 값이 주어진 속성만 변경
+            if (patchProductUpdateReq.getProductName() != null) {
+                existingProduct.setProductName(patchProductUpdateReq.getProductName());
+            }
+            if (patchProductUpdateReq.getPrice() != null) {
+                existingProduct.setPrice(patchProductUpdateReq.getPrice());
+            }
+            if (patchProductUpdateReq.getSalePrice() != null) {
+                existingProduct.setSalePrice(patchProductUpdateReq.getSalePrice());
+            }
+            if (patchProductUpdateReq.getProductInfo() != null) {
+                existingProduct.setProductInfo(patchProductUpdateReq.getProductInfo());
+            }
+            if (patchProductUpdateReq.getProductImages() != null) {
+                existingProduct.setImages(patchProductUpdateReq.getProductImages());
+            }
+            // 변경된 엔티티 저장
+            productRepository.save(existingProduct);
         }
     }
 
@@ -172,12 +190,8 @@ public class ProductService {
         Optional<Product> product =  productRepository.findById(idx);
         if(product.isPresent()) {
             Product product1 = product.get();
-            List<ProductImage> images = product1.getImages();
-            for (int i = 0; i < images.size(); i++) {
-                ProductImage image = images.get(i);
-                productImageRepository.delete(image);
-            }
-            productRepository.deleteById(idx);
+            Long productIdx = product1.getIdx();
+            productRepository.deleteById(productIdx);
         }
     }
 }
