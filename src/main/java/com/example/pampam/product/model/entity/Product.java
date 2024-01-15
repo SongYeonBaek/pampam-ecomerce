@@ -1,6 +1,7 @@
 package com.example.pampam.product.model.entity;
 
 import com.example.pampam.cart.model.entity.Cart;
+import com.example.pampam.category.model.entity.CategoryToProduct;
 import com.example.pampam.member.model.entity.Seller;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -38,9 +39,8 @@ public class Product {
     @JoinColumn(name = "Seller_ID")
     private Seller sellerIdx ;
 
-    // 카테고리 ID
-    //@OneToMany(mappedBy = "product")
-    //private List<CategoryToProduct> categoryList;
+    @OneToMany(mappedBy = "product")
+    private List<CategoryToProduct> categoryList;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
     private List<Cart> carts;
