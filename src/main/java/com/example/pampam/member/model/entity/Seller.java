@@ -32,6 +32,8 @@ public class Seller implements UserDetails {
     private String sellerBusinessNumber;
     private String authority;
     private Boolean status;         // email 인증 여부
+    @Column(length = 200)
+    private String image;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
