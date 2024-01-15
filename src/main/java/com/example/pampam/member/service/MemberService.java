@@ -17,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,10 +37,10 @@ public class MemberService implements UserDetailsService {
 
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
-
+@Transactional
     public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
-            return null;
+            return BaseResponse.failResponse("요청실패");
         }
         Consumer consumer = consumerRepository.save(Consumer.builder()
                 .email(consumerSignupReq.getEmail())
@@ -83,10 +85,10 @@ public class MemberService implements UserDetailsService {
         return baseResponse;
 
     }
-    public BaseResponse sellerSignup(SellerSignupReq sellerSignupReq) {
+    public BaseResponse sellerSignup(SellerSignupReq sellerSignupReq, MultipartFile image) {
 
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
-            return null;
+            return BaseResponse.failResponse("요청실패");
         }
         Seller seller = sellerRepository.save(Seller.builder()
                 .email(sellerSignupReq.getEmail())
@@ -249,37 +251,32 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public BaseResponse delete(MemberDeleteReq memberDeleteReq) {
-        if (memberDeleteReq.getAuthority().equals("CONSUMER")) {
-            Optional<Consumer> result = consumerRepository.findByEmail(memberDeleteReq.getEmail());
+    public BaseResponse<String> consumerDelete(ConsumerDeleteReq consumerDeleteReq) {
+        Optional<Consumer> result = consumerRepository.findByEmail(consumerDeleteReq.getEmail());
 
-            if (result.isPresent()) {
-                consumerRepository.delete(Consumer.builder()
-                        .consumerIdx(result.get().getConsumerIdx()).build());
+        if (result.isPresent()) {
+            consumerRepository.delete(Consumer.builder()
+                    .consumerIdx(result.get().getConsumerIdx()).build());
 
-                BaseResponse baseResponse = BaseResponse.successResponse("요청성공", result.get().getEmail());
-
-                return baseResponse;
-            }
-            BaseResponse.failResponse("요청실패");
-
-
-        } else if (memberDeleteReq.getAuthority().equals("SELLER")) {
-            Optional<Seller> result = sellerRepository.findByEmail(memberDeleteReq.getEmail());
-
-            if (result.isPresent()) {
-                sellerRepository.delete(Seller.builder()
-                        .sellerIdx(result.get().getSellerIdx()).build());
-
-                BaseResponse baseResponse = BaseResponse.successResponse("요청성공", result.get().getEmail());
-
-                return baseResponse;
-            }
-            return BaseResponse.failResponse("요청실패");
+            return BaseResponse.successResponse("요청성공", result.get().getEmail());
         }
         return BaseResponse.failResponse("요청실패");
-    }
 
+    }
+    public BaseResponse<String> sellerDelete(SellerDeleteReq sellerDeleteReq) {
+        Optional<Seller> result = sellerRepository.findByEmail(sellerDeleteReq.getEmail());
+
+        if (result.isPresent()) {
+            sellerRepository.delete(Seller.builder()
+                    .sellerIdx(result.get().getSellerIdx()).build());
+
+            BaseResponse baseResponse = BaseResponse.successResponse("요청성공", result.get().getEmail());
+
+            return baseResponse;
+        }
+        return BaseResponse.failResponse("요청실패");
+
+    }
     public void sendEmail(SendEmailReq sendEmailReq) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(sendEmailReq.getEmail());

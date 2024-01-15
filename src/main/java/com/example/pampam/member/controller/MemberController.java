@@ -1,14 +1,13 @@
 package com.example.pampam.member.controller;
 
+import com.example.pampam.common.BaseResponse;
 import com.example.pampam.member.model.request.*;
 import com.example.pampam.member.service.EmailVerifyService;
 import com.example.pampam.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
@@ -25,10 +24,10 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.consumerSignup(memberSignupReq));
     }
     @RequestMapping(method = RequestMethod.POST, value = "/seller/signup")
-    public ResponseEntity sellerSignup(@RequestBody SellerSignupReq sellerSignupReq){
+    public ResponseEntity sellerSignup(@RequestPart SellerSignupReq sellerSignupReq, @RequestPart MultipartFile image){
 //        memberService.sellerSignup(sellerSignupReq);
 
-        return ResponseEntity.ok().body(memberService.sellerSignup(sellerSignupReq));
+        return ResponseEntity.ok().body(memberService.sellerSignup(sellerSignupReq,image));
     }
 
 
@@ -54,10 +53,15 @@ public class MemberController {
 
         return ResponseEntity.ok().body(memberService.sellerUpdate(sellerUpdateReq));
     }
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
-    public ResponseEntity delete(@RequestBody MemberDeleteReq memberDeleteReq){
+    @RequestMapping(method = RequestMethod.DELETE, value = "/consumer/delete")
+    public ResponseEntity<BaseResponse<String>> consumerDelete(@RequestBody ConsumerDeleteReq consumerDeleteReq){
 
-        return ResponseEntity.ok().body(memberService.delete(memberDeleteReq));
+        return ResponseEntity.ok().body(memberService.consumerDelete(consumerDeleteReq));
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/seller/delete")
+    public ResponseEntity sellerDelete(@RequestBody SellerDeleteReq sellerDeleteReq){
+
+        return ResponseEntity.ok().body(memberService.sellerDelete(sellerDeleteReq));
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "confirm")
