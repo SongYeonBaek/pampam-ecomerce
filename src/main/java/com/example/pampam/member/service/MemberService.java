@@ -1,5 +1,7 @@
 package com.example.pampam.member.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.model.request.*;
@@ -16,13 +18,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
+    private final AmazonS3 s3;
     private final ConsumerRepository consumerRepository;
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,10 +43,17 @@ public class MemberService implements UserDetailsService {
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
 
+    @Value("" + "${project.upload.path}")
+    private String uploadPath;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
     public SuccessConsumerSignupRes consumerSignup(ConsumerSignupReq consumerSignupReq) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
             return null;
         }
+
         Consumer consumer = consumerRepository.save(Consumer.builder()
                 .email(consumerSignupReq.getEmail())
                 .consumerPW(passwordEncoder.encode(consumerSignupReq.getConsumerPW()))
@@ -87,11 +102,14 @@ public class MemberService implements UserDetailsService {
         return successConsumerSignupRes;
 
     }
-    public SuccessSellerSignupRes sellerSignup(SellerSignupReq sellerSignupReq) {
+
+    public SuccessSellerSignupRes sellerSignup(SellerSignupReq sellerSignupReq, MultipartFile image) {
 
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
             return null;
         }
+        String saveFileName = saveFile(image);
+
         Seller seller = sellerRepository.save(Seller.builder()
                 .email(sellerSignupReq.getEmail())
                 .sellerPW(passwordEncoder.encode(sellerSignupReq.getSellerPW()))
@@ -101,6 +119,7 @@ public class MemberService implements UserDetailsService {
                 .sellerBusinessNumber(sellerSignupReq.getSellerBusinessNumber())
                 .authority("SELLER")
                 .status(false)
+                .image(saveFileName.replace(File.separator, "/"))
                 .build());
 
         String accessToken = JwtUtils.generateAccessToken(seller, secretKey, expiredTimeMs);
@@ -123,6 +142,7 @@ public class MemberService implements UserDetailsService {
                 .authority(seller.getAuthority())
                 .status(seller.getStatus())
                 .sellerBusinessNumber(seller.getSellerBusinessNumber())
+                .image(seller.getImage())
                 .build();
 
         SuccessSellerSignupRes successSellerSignupRes = SuccessSellerSignupRes.builder()
@@ -322,6 +342,40 @@ public class MemberService implements UserDetailsService {
             return null;
         }
     }
+    public String makeFolder() {
+        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String folderPath = str.replace("/", File.separator);
+        File uploadPathFolder = new File(uploadPath, folderPath);
+        if (uploadPathFolder.exists() == false) {
+            uploadPathFolder.mkdirs();
+        }
+
+        return folderPath;
+    }
+
+    public String saveFile(MultipartFile file) {
+        String originalName = file.getOriginalFilename();
+        String folderPath = makeFolder();
+        String uuid = UUID.randomUUID().toString();
+        String saveFileName = folderPath + File.separator + uuid + "_" + originalName;
+//        File saveFile = new File(uploadPath, saveFileName);
+
+        try {
+//            file.transferTo(saveFile);
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
+
+            s3.putObject(bucket, saveFileName.replace(File.separator, "/"), file.getInputStream(), metadata);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return s3.getUrl(bucket, saveFileName.replace(File.separator,"/")).toString();
+    }
+
 
     public void sendEmail(SendEmailReq sendEmailReq) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -337,7 +391,41 @@ public class MemberService implements UserDetailsService {
         emailSender.send(message);
         emailVerifyService.create(sendEmailReq.getEmail(), uuid);
     }
+    public Consumer kakaoSignup(KakaoEmailReq kakaoEmailReq) {
+        Consumer consumer = consumerRepository.save(Consumer.builder()
+                .email(kakaoEmailReq.getEmail())
+                .consumerPW(passwordEncoder.encode("kakao"))
+                        .consumerName(kakaoEmailReq.getConsumerName())
+                        .consumerAddr("")
+                        .consumerPhoneNum("")
+                .authority("CONSUMER")
+                        .socialLogin(true)
+                        .status(true)
+                .build());
 
+//        ConsumerSignupRes consumerSignupRes = ConsumerSignupRes.builder()
+//                .consumerIdx(consumer.getConsumerIdx())
+//                .email(consumer.getEmail())
+//                .consumerPW(consumer.getConsumerPW())
+//                .consumerName(consumer.getConsumerName())
+//                .consumerAddr(consumer.getConsumerAddr())
+//                .consumerPhoneNum(consumer.getConsumerPhoneNum())
+//                .authority(consumer.getAuthority())
+//                .socialLogin(consumer.getSocialLogin())
+//                .status(consumer.getStatus())
+//                .build();
+//
+//        SuccessConsumerSignupRes successConsumerSignupRes = SuccessConsumerSignupRes.builder()
+//                .isSuccess(true)
+//                .code(1000)
+//                .message("요청성공")
+//                .result(consumerSignupRes)
+//                .success(true)
+//                .build();
+
+        return consumer;
+
+    }
 
     public Consumer getMemberByConsumerID(String email) {
         Optional<Consumer> result = consumerRepository.findByEmail(email);
@@ -346,6 +434,7 @@ public class MemberService implements UserDetailsService {
         }
         return null;
     }
+
 
     //
     public Seller getMemberBySellerID(String email) {

@@ -2,6 +2,8 @@ package com.example.pampam.member.model.response;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @Builder
 public class SellerSignupRes {
@@ -14,4 +16,5 @@ public class SellerSignupRes {
     private String authority;
     private Boolean status;
     private String sellerBusinessNumber;
+    private String image;
 }
