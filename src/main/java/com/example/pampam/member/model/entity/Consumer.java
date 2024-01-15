@@ -1,6 +1,7 @@
 package com.example.pampam.member.model.entity;
 
 
+import com.example.pampam.cart.model.entity.Cart;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,8 +35,8 @@ public class Consumer implements UserDetails {
     private Boolean socialLogin;
     private Boolean status;         // email 인증 여부
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Cart> carts;
+    @OneToMany(mappedBy = "consumer")
+    private List<Cart> carts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,5 +1,6 @@
 package com.example.pampam.product.model.entity;
 
+import com.example.pampam.cart.model.entity.Cart;
 import com.example.pampam.member.model.entity.Seller;
 import lombok.*;
 
@@ -38,8 +39,7 @@ public class Product {
     //@OneToMany(mappedBy = "product")
     //private List<CategoryToProduct> categoryList;
 
-    // 장바구니
-    //@OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
-    //private List<Cart> carts;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
+    private List<Cart> carts;
 }
 
