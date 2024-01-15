@@ -34,8 +34,9 @@ public class ProductController {
 
     }
 
+    //RequestPart => 포스트맨에서 multipart/form-data가 포함되어 있는 경우에 사용/ Json 데이터의 입력을 위함
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update(@AuthenticationPrincipal String email, PatchProductUpdateReq patchProductUpdateReq) {
+    public ResponseEntity update(@AuthenticationPrincipal String email, @RequestPart PatchProductUpdateReq patchProductUpdateReq) {
         productService.update(email,patchProductUpdateReq);
 
         return ResponseEntity.ok().body("수정");
