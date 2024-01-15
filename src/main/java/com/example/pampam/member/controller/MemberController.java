@@ -1,5 +1,6 @@
 package com.example.pampam.member.controller;
 
+import com.example.pampam.common.BaseResponse;
 import com.example.pampam.member.model.request.*;
 import com.example.pampam.member.service.EmailVerifyService;
 import com.example.pampam.member.service.MemberService;
@@ -21,7 +22,6 @@ public class MemberController {
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/signup")
     public ResponseEntity consumerSignup(@RequestBody ConsumerSignupReq memberSignupReq){
 //        memberService.consumerSignup(memberSignupReq);
-
         return ResponseEntity.ok().body(memberService.consumerSignup(memberSignupReq));
     }
     @RequestMapping(method = RequestMethod.POST, value = "/seller/signup")
@@ -33,9 +33,7 @@ public class MemberController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/login")
-    public ResponseEntity memberLogin(@RequestBody ConsumerLoginReq consumerLoginReq){
-
-
+    public ResponseEntity<BaseResponse> memberLogin(@RequestBody ConsumerLoginReq consumerLoginReq){
         return ResponseEntity.ok().body(memberService.consumerLogin(consumerLoginReq));
     }
 
