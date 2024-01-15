@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,7 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KakaoService {
     private final ConsumerRepository consumerRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Value("${jwt.secret-key}")
     private String secretKey;
 
@@ -92,6 +93,19 @@ public class KakaoService {
         return JwtUtils.generateAccessToken(consumer, secretKey, expiredTimeMs);
     }
 
+    public Consumer kakaoSignup(KakaoEmailReq kakaoEmailReq) {
+        Consumer consumer = consumerRepository.save(Consumer.builder()
+                .email(kakaoEmailReq.getEmail())
+                .consumerPW(passwordEncoder.encode("kakao"))
+                        .consumerName(kakaoEmailReq.getConsumerName())
+                        .consumerAddr("")
+                        .consumerPhoneNum("")
+                .authority("CONSUMER")
+                        .socialLogin(true)
+                        .status(true)
+                .build());
+        return consumer;
+    }
 //    public Consumer getKakaoByEmail(GetKakaoByEmailReq getKakaoByEmailReq) {
 //        Optional<Consumer> result = consumerRepository.findByEmail(getKakaoByEmailReq.getEmail());
 //        if (result.isPresent()) {

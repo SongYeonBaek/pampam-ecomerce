@@ -1,5 +1,7 @@
 package com.example.pampam.member.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.pampam.common.BaseResponse;
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.model.entity.Seller;
@@ -20,6 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,12 +37,18 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
-
+    private final AmazonS3 s3;
     @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
+
+    @Value("${project.upload.path}")
+    private String uploadPath;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 @Transactional
     public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
@@ -85,7 +97,42 @@ public class MemberService implements UserDetailsService {
         return baseResponse;
 
     }
+    public String makeFolder() {
+        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String folderPath = str.replace("/", File.separator);
+        File uploadPathFolder = new File(uploadPath, folderPath);
+        if (uploadPathFolder.exists() == false) {
+            uploadPathFolder.mkdirs();
+        }
+
+        return folderPath;
+    }
+
+    public String saveFile(MultipartFile file) {
+        String originalName = file.getOriginalFilename();
+        String folderPath = makeFolder();
+        String uuid = UUID.randomUUID().toString();
+        String saveFileName = folderPath + File.separator + uuid + "_" + originalName;
+//        File saveFile = new File(uploadPath, saveFileName);
+
+        try {
+//            file.transferTo(saveFile);
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
+
+            s3.putObject(bucket, saveFileName.replace(File.separator, "/"), file.getInputStream(), metadata);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
+    }
     public BaseResponse sellerSignup(SellerSignupReq sellerSignupReq, MultipartFile image) {
+
+        String saveFileName = saveFile(image);
 
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
             return BaseResponse.failResponse("요청실패");
@@ -99,6 +146,7 @@ public class MemberService implements UserDetailsService {
                 .sellerBusinessNumber(sellerSignupReq.getSellerBusinessNumber())
                 .authority("SELLER")
                 .status(false)
+                        .image(saveFileName)
                 .build());
 
         String accessToken = JwtUtils.generateAccessToken(seller, secretKey, expiredTimeMs);
@@ -121,6 +169,7 @@ public class MemberService implements UserDetailsService {
                 .authority(seller.getAuthority())
                 .status(seller.getStatus())
                 .sellerBusinessNumber(seller.getSellerBusinessNumber())
+                .image(seller.getImage())
                 .build();
 
         BaseResponse baseResponse = BaseResponse.successResponse("요청성공", sellerSignupRes);
@@ -251,26 +300,29 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public BaseResponse<String> consumerDelete(ConsumerDeleteReq consumerDeleteReq) {
+    public BaseResponse consumerDelete(ConsumerDeleteReq consumerDeleteReq) {
         Optional<Consumer> result = consumerRepository.findByEmail(consumerDeleteReq.getEmail());
 
         if (result.isPresent()) {
             consumerRepository.delete(Consumer.builder()
                     .consumerIdx(result.get().getConsumerIdx()).build());
 
-            return BaseResponse.successResponse("요청성공", result.get().getEmail());
+            SellerDeleteRes sellerDeleteRes = SellerDeleteRes.builder().email(result.get().getEmail()).build();
+
+            return BaseResponse.successResponse("요청성공", sellerDeleteRes);
         }
         return BaseResponse.failResponse("요청실패");
 
     }
-    public BaseResponse<String> sellerDelete(SellerDeleteReq sellerDeleteReq) {
+    public BaseResponse sellerDelete(SellerDeleteReq sellerDeleteReq) {
         Optional<Seller> result = sellerRepository.findByEmail(sellerDeleteReq.getEmail());
 
         if (result.isPresent()) {
             sellerRepository.delete(Seller.builder()
                     .sellerIdx(result.get().getSellerIdx()).build());
 
-            BaseResponse baseResponse = BaseResponse.successResponse("요청성공", result.get().getEmail());
+            ConsumerDeleteRes consumerDeleteRes = ConsumerDeleteRes.builder().email(result.get().getEmail()).build();
+            BaseResponse baseResponse = BaseResponse.successResponse("요청성공", consumerDeleteRes);
 
             return baseResponse;
         }
