@@ -20,12 +20,12 @@ public class Cart {
     private Long idx;
 
     // 상품이랑 연관관계 맺기
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_idx")
     private Product product;
 
     // 구매자랑 연관관계 맺기
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_idx")
     private Consumer consumer;
 }

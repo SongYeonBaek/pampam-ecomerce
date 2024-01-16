@@ -37,10 +37,10 @@ public class Consumer implements UserDetails {
     private Boolean socialLogin;
     private Boolean status;         // email 인증 여부
 
-    @OneToMany(mappedBy = "consumer")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
     private List<Cart> carts;
 
-    @OneToMany(mappedBy = "consumer")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
     private List<Orders> ordersList = new ArrayList<>();
 
     @Override
