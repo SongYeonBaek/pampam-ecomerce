@@ -6,5 +6,5 @@ import com.example.demo.member.application.port.in.SignupSellerCommand;
 import com.example.demo.member.domain.Seller;
 
 public interface SignupSellerOutport {
-    Seller signupSeller(Seller seller);
+    SellerJpaEntity signupSeller(Seller seller);
 }

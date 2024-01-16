@@ -21,8 +21,13 @@ public class SignupSellerController {
     public Seller signupSeller(SignupSellerRequest request){
         SignupSellerCommand command = SignupSellerCommand.builder()
                 .email(request.getEmail())
-                .password(request.getPassword()).build();
+                .sellerPW(request.getSellerPW())
+                .sellerName(request.getSellerName())
+                .sellerAddr(request.getSellerAddr())
+                .sellerPhoneNum(request.getSellerPhoneNum())
+                .sellerBusinessNumber(request.getSellerBusinessNumber())
+                .build();
 
-        return signupSellerInport.signupMember(command);
+        return signupSellerInport.signupSeller(command);
     }
 }

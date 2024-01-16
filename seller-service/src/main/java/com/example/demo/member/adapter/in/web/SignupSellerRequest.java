@@ -11,6 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SignupSellerRequest {
     private String email;
-    private String password;
+    private String sellerPW;
+    private String sellerName;
+    private String sellerAddr;
+    private String sellerPhoneNum;
+    private String sellerBusinessNumber;
 //    private Boolean status;
 }

@@ -12,24 +12,15 @@ public class SellerPersistenceAdapter implements SignupSellerOutport {
     private final SpringDataSellerRepository memberRepository;
 
     @Override
-    public Seller signupSeller(Seller seller) {
-        SellerJpaEntity sellerJpaEntity = memberRepository.save(SellerJpaEntity.builder()
+    public SellerJpaEntity signupSeller(Seller seller) {
+        return memberRepository.save(SellerJpaEntity.builder()
                 .email(seller.getEmail())
-               .sellerPW(seller.getSellerPW())
-                       .sellerName(seller.getSellerName())
-                       .sellerPhoneNum(seller.getSellerPhoneNum())
-                       .sellerBusinessNumber(seller.getSellerBusinessNumber())
-                       .sellerAddr(seller.getSellerAddr())
+                .sellerPW(seller.getSellerPW())
+                .sellerName(seller.getSellerName())
+                .sellerPhoneNum(seller.getSellerPhoneNum())
+                .sellerBusinessNumber(seller.getSellerBusinessNumber())
+                .sellerAddr(seller.getSellerAddr())
                 .build());
 
-        return Seller.builder()
-                .id(sellerJpaEntity.getId())
-                .email(sellerJpaEntity.getEmail())
-                .sellerPW(sellerJpaEntity.getSellerPW())
-                .sellerName(sellerJpaEntity.getSellerName())
-                .sellerAddr(sellerJpaEntity.getSellerAddr())
-                .sellerBusinessNumber(sellerJpaEntity.getSellerBusinessNumber())
-                .sellerPhoneNum(sellerJpaEntity.getSellerPhoneNum())
-                .build();
     }
 }
