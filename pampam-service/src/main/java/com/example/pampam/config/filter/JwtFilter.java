@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +24,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final MemberService memberService;
     private final String secretKey;
 
-
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
 
@@ -47,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Consumer member = memberService.getMemberByConsumerID(username);
 
-        
+
         // TODO: 수정이 필요한 코드
         if (member != null) {
             String memberUsername = member.getUsername();
@@ -88,8 +85,5 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
         }
-
-
-
     }
 }

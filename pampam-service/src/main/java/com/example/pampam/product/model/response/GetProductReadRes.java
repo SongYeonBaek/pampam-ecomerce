@@ -5,8 +5,6 @@ import com.example.pampam.product.model.entity.Product;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
-
 @Builder
 @Data
 public class GetProductReadRes {
@@ -17,7 +15,18 @@ public class GetProductReadRes {
     private String productInfo;
     private String filename;
     private Seller sellerIdx ;
-    private Integer peopleCount;
-    private Date startAt;
-    private Date closeAt;
+
+    public static GetProductReadRes DtoToRes(Product product, String fileNames)
+    {
+        return GetProductReadRes.builder()
+                .idx(product.getIdx())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .salePrice(product.getSalePrice())
+                .productInfo(product.getProductInfo())
+                .filename(fileNames)
+                .sellerIdx(product.getSellerIdx())
+                .build();
+    }
+
 }
