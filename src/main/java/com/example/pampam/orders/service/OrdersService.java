@@ -10,9 +10,7 @@ import com.example.pampam.orders.model.response.OrdersListRes;
 import com.example.pampam.orders.repository.OrderedProductRepository;
 import com.example.pampam.orders.repository.OrdersRepository;
 import com.example.pampam.product.model.entity.Product;
-import com.example.pampam.product.repository.ProductRepository;
 import com.google.gson.Gson;
-import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
@@ -30,53 +28,12 @@ import java.util.Optional;
 public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final OrderedProductRepository orderedProductRepository;
-    private final ProductRepository productRepository;
-    private final IamportClient iamportClient;
+    private final PaymentService paymentService;
     private final ConsumerRepository consumerRepository;
 
 
-    //결제 정보를 가져옴. IamportResponse에 response 다 들어있음! (amount, customData 등)
-    public IamportResponse getPaymentInfo(String impUid) throws IamportResponseException, IOException {
-        IamportResponse<Payment> response = iamportClient.paymentByImpUid(impUid);
-        return response;
-    }
-
-    //주문한 총 가격을 구하는 메소드
-    public Integer getTotalPrice(List<PortoneReq> datas){
-        List<Long> productIds = new ArrayList<>();
-        for (PortoneReq product: datas) {
-            productIds.add(product.getId());
-        }
-
-        List<Product> products = productRepository.findAllById(productIds);
-
-        Integer totalPrice = 0;
-        for (PortoneReq product: datas) {
-            totalPrice += product.getPrice();
-        }
-
-        return  totalPrice;
-    }
-
-    //Portone에서 결제 정보 가져와서 검증 처리
-    public Boolean paymentValidation(String impUid) throws IamportResponseException, IOException {
-        IamportResponse<Payment> response = getPaymentInfo(impUid);
-        Integer amount = response.getResponse().getAmount().intValue();
-        String customDataString = response.getResponse().getCustomData();
-        System.out.println(customDataString);
-        customDataString = "{\"products\":" + customDataString + "}";
-        Gson gson = new Gson();
-        PaymentProducts paymentProducts = gson.fromJson(customDataString, PaymentProducts.class);
-
-        Integer totalPrice = getTotalPrice(paymentProducts.getProducts());
-        if(amount.equals(totalPrice) ) {
-            return true;
-        }
-        return false;
-    }
-
     public void createOrder(String email, String impUid) throws IamportResponseException, IOException {
-        IamportResponse<Payment> iamportResponse = getPaymentInfo(impUid);
+        IamportResponse<Payment> iamportResponse = paymentService.getPaymentInfo(impUid);
         Integer amount = iamportResponse.getResponse().getAmount().intValue();
         String customDataString = iamportResponse.getResponse().getCustomData();
         customDataString = "{\"products\":" + customDataString + "}";
@@ -118,4 +75,5 @@ public class OrdersService {
         }
         return result;
     }
+
 }

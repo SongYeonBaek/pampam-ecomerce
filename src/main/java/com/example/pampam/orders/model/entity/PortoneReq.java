@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortoneReq {
-    Long id;
-    String name;
-    Integer price;
+    private Long id;
+    private String name;
+    private Integer price;
 }
