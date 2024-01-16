@@ -11,8 +11,14 @@
     <groupId>com.example</groupId>
     <artifactId>pampam</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>pampam</name>
     <description>pampam</description>
+    <modules>
+        <module>gateway</module>
+        <module>discovery</module>
+        <module>common</module>
+    </modules>
     <properties>
         <java.version>11</java.version>
     </properties>
