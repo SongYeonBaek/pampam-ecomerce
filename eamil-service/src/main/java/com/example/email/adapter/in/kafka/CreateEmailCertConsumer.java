@@ -19,7 +19,7 @@ public class CreateEmailCertConsumer {  // kafka에서 메세지를 받는 곳�
     private final CreateEmailCertInport emailCertInport;
 
     // 지정한 토픽을 통해서 메세지를 받는다.
-    @KafkaListener(topics = "test", groupId = "signup-group-00")
+    @KafkaListener(topics = "signup", groupId = "signup-group-00")
     public void modifyMember(ConsumerRecord<String, String> record) {
 
         log.info("record {}", record);
