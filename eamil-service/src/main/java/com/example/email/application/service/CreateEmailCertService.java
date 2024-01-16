@@ -1,5 +1,6 @@
 package com.example.email.application.service;
 
+import com.example.email.adapter.out.persistence.EmailCertEntity;
 import com.example.email.application.in.CreateEmailCertCommand;
 import com.example.email.application.in.CreateEmailCertInport;
 import com.example.email.application.out.CreateEmailCertOutport;
@@ -16,15 +17,19 @@ public class CreateEmailCertService implements CreateEmailCertInport {
     private final SendEmailOutport sendEmailOutport;
 
     @Override
-    public void createEmailCert(CreateEmailCertCommand command) {
+    public EmailCert createEmailCert(CreateEmailCertCommand command) {
         EmailCert emailCert = EmailCert.builder()
-                .idx(command.getId())
                 .email(command.getEmail())
                 .uuid(command.getUuid())
                 .build();
-        emailCertOutport.createEmailCert(emailCert);
-
+        EmailCertEntity emailInfo = emailCertOutport.createEmailCert(emailCert);
         sendEmailOutport.sendEmail(emailCert);
+
+        return EmailCert.builder()
+                .idx(emailInfo.getIdx())
+                .email(emailInfo.getEmail())
+                .uuid(emailInfo.getUuid())
+                .build();
 
     }
 }

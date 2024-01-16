@@ -14,9 +14,10 @@ public class VerifyEmailCertConsumer {
 
     private final VerifyEmailCertInport emailCertInport;
 
-//    @KafkaListener(topics = "verifyEmail", groupId = "emailcert-group-00")
+    @KafkaListener(topics = "verifyEmail", groupId = "emailcert-group-00")
     public Boolean modifyMember(ConsumerRecord<String, String> record) {
-        Boolean result = emailCertInport.verifyCertEmail(VerifyEmailCertCommand.builder()
+        Boolean result = emailCertInport.verifyCertEmail(
+                VerifyEmailCertCommand.builder()
                 .email(record.value())
                 .build());
 
