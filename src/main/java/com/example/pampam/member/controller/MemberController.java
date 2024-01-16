@@ -1,14 +1,15 @@
 package com.example.pampam.member.controller;
 
+import com.example.pampam.common.BaseResponse;
+import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.model.request.*;
 import com.example.pampam.member.service.EmailVerifyService;
+import com.example.pampam.member.service.KakaoService;
 import com.example.pampam.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class MemberController {
     private final MemberService memberService;
     private final EmailVerifyService emailVerifyService;
-
+    private final KakaoService kakaoService;
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/signup")
     public ResponseEntity consumerSignup(@RequestBody ConsumerSignupReq memberSignupReq){
 //        memberService.consumerSignup(memberSignupReq);
@@ -25,10 +26,10 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.consumerSignup(memberSignupReq));
     }
     @RequestMapping(method = RequestMethod.POST, value = "/seller/signup")
-    public ResponseEntity sellerSignup(@RequestBody SellerSignupReq sellerSignupReq){
+    public ResponseEntity sellerSignup(@RequestPart SellerSignupReq sellerSignupReq, @RequestPart MultipartFile image){
 //        memberService.sellerSignup(sellerSignupReq);
 
-        return ResponseEntity.ok().body(memberService.sellerSignup(sellerSignupReq));
+        return ResponseEntity.ok().body(memberService.sellerSignup(sellerSignupReq,image));
     }
 
 
@@ -54,10 +55,15 @@ public class MemberController {
 
         return ResponseEntity.ok().body(memberService.sellerUpdate(sellerUpdateReq));
     }
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
-    public ResponseEntity delete(@RequestBody MemberDeleteReq memberDeleteReq){
+    @RequestMapping(method = RequestMethod.DELETE, value = "/consumer/delete")
+    public ResponseEntity<BaseResponse<String>> consumerDelete(@RequestBody ConsumerDeleteReq consumerDeleteReq){
 
-        return ResponseEntity.ok().body(memberService.delete(memberDeleteReq));
+        return ResponseEntity.ok().body(memberService.consumerDelete(consumerDeleteReq));
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/seller/delete")
+    public ResponseEntity sellerDelete(@RequestBody SellerDeleteReq sellerDeleteReq){
+
+        return ResponseEntity.ok().body(memberService.sellerDelete(sellerDeleteReq));
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "confirm")
@@ -65,7 +71,25 @@ public class MemberController {
 
         return emailVerifyService.verify(getEmailConfirmReq);
 
-
-
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/kakao")
+    // 인가 코드 받아오는 코드
+    public ResponseEntity kakao(String code) {
+        System.out.println(code);
+        /////////////////////////////////
+        // 인가 코드로 토큰 받아오는 코드
+        String accessToken = kakaoService.getKakaoToken(code);
+        ///////////////////////////////////////////////////////////////
+        // 토큰으로 사용자 정보 받아오는 코드
+        KakaoEmailReq kakaoEmailReq = kakaoService.getUserInfo(accessToken);
+        //////////////////////////////////////////////
+        // 가져온 사용자 정보로 DB 확인
+        Consumer consumer = memberService.getMemberByConsumerID(kakaoEmailReq.getEmail());
+        if(consumer == null) {
+            // DB에 없으면 회원 가입
+            consumer = kakaoService.kakaoSignup(kakaoEmailReq);
+        }
+        // 로그인 처리(JWT 토큰 발급)
+        return ResponseEntity.ok().body(kakaoService.kakaoLogin(consumer));
     }
 }
