@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 //포트원 결제 서비스 서버 연결하기
 @Configuration
 public class PortoneConfig {
-    @Value("${imp.api-Key}")
+    @Value("${imp.apiKey}")
     private String apiKey;
-    @Value("${imp.secret-Key}")
+    @Value("${imp.secretKey}")
     private String apiSecret;
 
     @Bean

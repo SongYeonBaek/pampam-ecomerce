@@ -1,7 +1,8 @@
 package com.example.pampam.orders.service;
 
+import com.example.pampam.common.BaseResponse;
 import com.example.pampam.orders.model.entity.PaymentProducts;
-import com.example.pampam.orders.model.entity.PortoneReq;
+import com.example.pampam.orders.model.response.GetPortOneRes;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.repository.ProductRepository;
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ public class PaymentService {
     private String secretKey;
 
     //PortOne 토큰 발급
-    public String getToken() throws IOException {
+    private String getToken() throws IOException {
         HttpsURLConnection conn = null;
 
         URL url = new URL("https://api.iamport.kr/users/getToken");
@@ -74,16 +75,16 @@ public class PaymentService {
     }
 
     //주문한 총 가격을 구하는 메소드
-    public Integer getTotalPrice(List<PortoneReq> datas){
+    private Integer getTotalPrice(List<GetPortOneRes> datas){
         List<Long> productIds = new ArrayList<>();
-        for (PortoneReq product: datas) {
+        for (GetPortOneRes product: datas) {
             productIds.add(product.getId());
         }
 
         List<Product> products = productRepository.findAllById(productIds);
 
         Integer totalPrice = 0;
-        for (PortoneReq product: datas) {
+        for (GetPortOneRes product: datas) {
             totalPrice += product.getPrice();
         }
 
@@ -106,7 +107,7 @@ public class PaymentService {
         }
         return false;
     }
-    public void paymentCancel(String impUid) throws IOException {
+    public BaseResponse<String> paymentCancel(String impUid) throws IOException {
         String token = getToken();
 
         URL url = new URL("https://api.iamport.kr/payments/cancel");
@@ -143,7 +144,10 @@ public class PaymentService {
         br.close();
         conn.disconnect();
 
-        System.out.println("결제 취소 완료: 주문번호 " + impUid);
+
+        return BaseResponse.successResponse("결제 취소 완료","결제 취소 완료: 주문번호 " + impUid);
 
     }
+
+
 }
