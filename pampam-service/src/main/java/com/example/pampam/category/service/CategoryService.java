@@ -8,6 +8,8 @@ import com.example.pampam.category.model.response.PostInsertRes;
 import com.example.pampam.category.repository.CategoryRepository;
 import com.example.pampam.category.repository.CategoryToProductRepository;
 import com.example.pampam.common.BaseResponse;
+import com.example.pampam.exception.EcommerceApplicationException;
+import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.repository.ProductRepository;
 import com.example.pampam.utils.ProductType;
@@ -41,7 +43,7 @@ public class CategoryService {
                     .build());
         }
 
-        return searchList;
+        return BaseResponse.successResponse("카테고리 조회 성공", searchList);
     }
 
     public BaseResponse<PostInsertRes> insertCategory(Long idx, PostInsertCategoryReq categoryReq) {
@@ -65,7 +67,7 @@ public class CategoryService {
 
             return BaseResponse.successResponse("요청 성공", postInsertRes);
         } else {
-            return BaseResponse.failResponse("에러 발생");
+            throw new EcommerceApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
         }
     }
 }

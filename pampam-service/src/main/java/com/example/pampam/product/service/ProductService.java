@@ -1,6 +1,8 @@
 package com.example.pampam.product.service;
 
 import com.example.pampam.common.BaseResponse;
+import com.example.pampam.exception.EcommerceApplicationException;
+import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.repository.SellerRepository;
 import com.example.pampam.product.model.entity.Product;
@@ -33,9 +35,11 @@ public class ProductService {
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         Seller user;
+
         if (seller.isPresent()) {
             user = seller.get();
-        } else throw new RuntimeException("비인증된 접근입니다.");
+        } else throw new EcommerceApplicationException(
+                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
 
         Product product;
         product = productRepository.save(Product.builder()
@@ -71,7 +75,8 @@ public class ProductService {
 
         if (seller.isPresent()) {
             System.out.println("인증된 접근입니다.");
-        } else throw new RuntimeException("비인증된 접근입니다.");
+        } else throw new EcommerceApplicationException(
+                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
 
         Pageable pageable = PageRequest.of(page-1,size);
         Page<Product> result = productRepository.findList(pageable);
@@ -113,7 +118,8 @@ public class ProductService {
 
         if(seller.isPresent()) {
             System.out.println("인증된 접근입니다.");
-        } else throw new RuntimeException("비인증된 접근입니다.");
+        } else throw new EcommerceApplicationException(
+                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
 
         Optional<Product> result = productRepository.findById(idx);
 
@@ -155,13 +161,14 @@ public class ProductService {
 
         if(seller.isPresent()) {
             System.out.println("인증된 접근입니다.");
-        } else throw new RuntimeException("비인증된 접근입니다.");
+        } else throw new EcommerceApplicationException(
+                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
 
         Optional<Product> result = productRepository.findById(patchProductUpdateReq.getId());
         if (result.isPresent()) {
             Product existingProduct = productRepository.findById(patchProductUpdateReq.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + patchProductUpdateReq.getId()));
-
+                    .orElseThrow(() -> new EcommerceApplicationException(
+                            ErrorCode.PRODUCT_NOT_FOUND, String.format("%d번 상품은 존재하지 않습니다.", patchProductUpdateReq.getId()), ErrorCode.PRODUCT_NOT_FOUND.getCode()));
             // DTO에서 값이 주어진 속성만 변경
             if (patchProductUpdateReq.getProductName() != null) {
                 existingProduct.setProductName(patchProductUpdateReq.getProductName());
@@ -189,7 +196,8 @@ public class ProductService {
 
         if(seller.isPresent()) {
             System.out.println("인증된 접근입니다.");
-        } else throw new RuntimeException("비인증된 접근입니다.");
+        } else throw new EcommerceApplicationException(
+                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
 
         Optional<Product> product =  productRepository.findById(idx);
         if(product.isPresent()) {

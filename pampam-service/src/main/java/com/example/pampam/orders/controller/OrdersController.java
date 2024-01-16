@@ -32,9 +32,9 @@ public class OrdersController {
 
                 return ordersService.createOrder(email, impUid);
             }
-            return BaseResponse.failResponse("결제가 유효하지 않아 주문 취소.");
+            return BaseResponse.failResponse(7000, "결제가 유효하지 않아 주문 취소.");
         } catch (Exception e){
-            return BaseResponse.failResponse("주문 취소.");
+            return BaseResponse.failResponse(7000, "주문 취소.");
         }
     }
 

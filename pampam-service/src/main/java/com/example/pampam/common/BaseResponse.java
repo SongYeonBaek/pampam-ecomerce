@@ -17,7 +17,7 @@ public class BaseResponse<T> {
         return new BaseResponse<>(true, 1000, message, result, true);
     }
 
-    public static <T> BaseResponse<T> failResponse(String message) {
-        return new BaseResponse<>(false, 7000, message, null, false);
+    public static <T> BaseResponse<T> failResponse(Integer code, String message) {
+        return new BaseResponse<>(false, code, message, null, false);
     }
 }
