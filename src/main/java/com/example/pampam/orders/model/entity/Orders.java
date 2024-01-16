@@ -2,8 +2,8 @@ package com.example.pampam.orders.model.entity;
 
 
 import com.example.pampam.member.model.entity.Consumer;
+import com.example.pampam.product.model.entity.Product;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,19 +18,18 @@ import java.util.List;
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idx;
+    private Long idx;
 
-    String impUid;
+    private String impUid;
 
-    LocalDate orderDate;
+    private LocalDate orderDate;
 
-    Integer price;
+    private Integer price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Consumer_idx")
-    Consumer consumer;
+    private Consumer consumer;
 
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     private List<OrderedProduct> orderProductsList = new ArrayList<>();
-
 }

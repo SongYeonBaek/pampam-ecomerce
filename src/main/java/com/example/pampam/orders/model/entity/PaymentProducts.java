@@ -1,7 +1,6 @@
 package com.example.pampam.orders.model.entity;
 
 import lombok.*;
-
 import java.util.List;
 
 @Getter
@@ -10,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentProducts {
-    List<PortoneReq> products;
+    private List<PortoneReq> products;
 }

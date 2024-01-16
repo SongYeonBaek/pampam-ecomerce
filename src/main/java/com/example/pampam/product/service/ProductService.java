@@ -1,5 +1,6 @@
 package com.example.pampam.product.service;
 
+import com.example.pampam.common.BaseResponse;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.repository.SellerRepository;
 import com.example.pampam.product.model.entity.Product;
@@ -22,20 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
     private final ImageSaveService imageSaveService;
     private final SellerRepository sellerRepository;
 
     // TODO: 상품 등록
-    public PostProductResgisterRes register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
+    public BaseResponse<PostProductResgisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -50,6 +48,10 @@ public class ProductService {
                 .productInfo(productRegisterReq.getProductInfo())
                 .price(productRegisterReq.getPrice())
                 .salePrice(productRegisterReq.getSalePrice())
+                .startAt(productRegisterReq.getStartAt())
+                .closeAt(productRegisterReq.getCloseAt())
+                .people(productRegisterReq.getPeople())
+                .peopleCount(productRegisterReq.getPeopleCount())
                 .sellerIdx(user)
                 .build());
 
@@ -57,12 +59,18 @@ public class ProductService {
             String uploadPath = imageSaveService.uploadFile(uploadFile);
             imageSaveService.saveFile(product.getIdx(), uploadPath);
         }
-        return PostProductResgisterRes.EntityToDto(product);
 
+
+        Long result = product.getIdx();
+        PostProductResgisterRes postProductResgisterRes = PostProductResgisterRes.builder()
+                .idx(result)
+                .build();
+
+        return BaseResponse.successResponse("요청 성공", postProductResgisterRes);
     }
 
     // TODO: 상품 전체 조회
-    public GetProductListRes list(String email, Integer page, Integer size) {
+    public BaseResponse<Object> list(String email, Integer page, Integer size) {
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -86,22 +94,26 @@ public class ProductService {
             }
             filenames = filenames.substring(0, filenames.length() - 1);
 
-            // DtoToRes
-            GetProductReadRes getProductReadRes = GetProductReadRes.DtoToRes(product,filenames);
+
+            GetProductReadRes getProductReadRes = GetProductReadRes.builder()
+                    .idx(product.getIdx())
+                    .productName(product.getProductName())
+                    .price(product.getPrice())
+                    .salePrice(product.getSalePrice())
+                    .productInfo(product.getProductInfo())
+                    .filename(filenames)
+                    .sellerIdx(product.getSellerIdx())
+                    .peopleCount(product.getPeopleCount())
+                    .startAt(product.getStartAt())
+                    .closeAt(product.getCloseAt())
+                    .build();
             productReadResList.add(getProductReadRes);
         }
-
             // DtoToRes
-        return GetProductListRes.builder()
-                .code(1000)
-                .message("요청 성공.")
-                .success(true)
-                .isSuccess(true)
-                .result(productReadResList)
-                .build();
+       return BaseResponse.successResponse("요청 성공", productReadResList);
     }
 
-    public GetProductReadRes2 read(String email, Long idx) {
+    public BaseResponse<GetProductReadRes> read(String email, Long idx) {
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         if(seller.isPresent()) {
@@ -131,15 +143,12 @@ public class ProductService {
                     .productInfo(product.getProductInfo())
                     .filename(filenames)
                     .sellerIdx(product.getSellerIdx())
+                    .peopleCount(product.getPeopleCount())
+                    .startAt(product.getStartAt())
+                    .closeAt(product.getCloseAt())
                     .build();
 
-            return GetProductReadRes2.builder()
-                    .code(1000)
-                    .message("요청 성공.")
-                    .success(true)
-                    .isSuccess(true)
-                    .result(getProductReadRes)
-                    .build();
+            return BaseResponse.successResponse("요청 성공", getProductReadRes);
         }
         return null;
     }

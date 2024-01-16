@@ -1,7 +1,6 @@
 package com.example.pampam.orders.model.response;
 
 import lombok.*;
-
 import java.time.LocalDate;
 
 @Getter
@@ -10,8 +9,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrdersListRes {
-    Long idx;
-    LocalDate orderDate;
-//    List<OrderedProduct> orderProductsList = new ArrayList<>();
+    private Long idx;
+    private LocalDate orderDate;
     private String productName;
 }

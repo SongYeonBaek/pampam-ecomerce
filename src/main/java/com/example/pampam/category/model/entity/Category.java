@@ -3,6 +3,7 @@ package com.example.pampam.category.model.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -18,6 +19,6 @@ public class Category {
     private String region;
     private String type;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "category")
     private List<CategoryToProduct> categoryList;
 }

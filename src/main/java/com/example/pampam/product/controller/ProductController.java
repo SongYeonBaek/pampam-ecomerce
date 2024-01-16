@@ -18,20 +18,16 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public ResponseEntity register(@AuthenticationPrincipal String email, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart MultipartFile[] images) {
-        PostProductResgisterRes postProductResgisterRes = productService.register(email,productRegisterReq,images);
-        return ResponseEntity.ok(postProductResgisterRes);
+        return ResponseEntity.ok(productService.register(email,productRegisterReq,images));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public ResponseEntity list(@AuthenticationPrincipal String email,Integer page, Integer size) {
-
-
         return ResponseEntity.ok().body(productService.list(email,page, size));
     }
     @GetMapping("/read/{idx}")
     public ResponseEntity read(@AuthenticationPrincipal String email,@PathVariable Long idx) {
         return ResponseEntity.ok().body(productService.read(email,idx));
-
     }
 
     //RequestPart => 포스트맨에서 multipart/form-data가 포함되어 있는 경우에 사용/ Json 데이터의 입력을 위함
