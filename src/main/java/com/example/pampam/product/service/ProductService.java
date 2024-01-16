@@ -50,6 +50,7 @@ public class ProductService {
                 .salePrice(productRegisterReq.getSalePrice())
                 .startAt(productRegisterReq.getStartAt())
                 .closeAt(productRegisterReq.getCloseAt())
+                .people(productRegisterReq.getPeople())
                 .peopleCount(productRegisterReq.getPeopleCount())
                 .sellerIdx(user)
                 .build());

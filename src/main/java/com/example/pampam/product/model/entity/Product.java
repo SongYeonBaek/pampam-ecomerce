@@ -3,6 +3,7 @@ package com.example.pampam.product.model.entity;
 import com.example.pampam.cart.model.entity.Cart;
 import com.example.pampam.category.model.entity.CategoryToProduct;
 import com.example.pampam.member.model.entity.Seller;
+import com.example.pampam.orders.model.entity.OrderedProduct;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,11 +30,15 @@ public class Product {
     private Integer price;
     private Integer salePrice;
     private String productInfo;
-    private Integer peopleCount;
+    private Integer people; // 모집 인원 수
+    private Integer peopleCount; // 모인 인원 수
+
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM.dd HH.mm", timezone="Asia/Seoul")
     private Date startAt;
+
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
     private Date closeAt;
+
     // TODO: 연관관계 설정 후 외래키 지정
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
@@ -48,5 +53,8 @@ public class Product {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
     private List<Cart> carts;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderedProduct> orderedProducts = new ArrayList<>();
 }
 

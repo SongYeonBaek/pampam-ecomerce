@@ -17,6 +17,7 @@ public class PostProductRegisterReq {
     private Integer price;
     private Integer salePrice;
     private String productInfo;
+    private Integer people;
     private Integer peopleCount;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
     private Date startAt;

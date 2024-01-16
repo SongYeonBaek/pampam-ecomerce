@@ -2,6 +2,7 @@ package com.example.pampam.orders.model.entity;
 
 
 import com.example.pampam.member.model.entity.Consumer;
+import com.example.pampam.product.model.entity.Product;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,5 +32,4 @@ public class Orders {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     private List<OrderedProduct> orderProductsList = new ArrayList<>();
-
 }
