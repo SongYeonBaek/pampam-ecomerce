@@ -32,6 +32,7 @@ public class KakaoService {
 
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
+
     public KakaoEmailReq getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);

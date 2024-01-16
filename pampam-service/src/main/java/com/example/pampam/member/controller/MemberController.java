@@ -19,6 +19,7 @@ public class MemberController {
     private final MemberService memberService;
     private final EmailVerifyService emailVerifyService;
     private final KakaoService kakaoService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/signup")
     public ResponseEntity consumerSignup(@RequestBody ConsumerSignupReq memberSignupReq){
 //        memberService.consumerSignup(memberSignupReq);
@@ -76,20 +77,12 @@ public class MemberController {
     // 인가 코드 받아오는 코드
     public ResponseEntity kakao(String code) {
         System.out.println(code);
-        /////////////////////////////////
-        // 인가 코드로 토큰 받아오는 코드
         String accessToken = kakaoService.getKakaoToken(code);
-        ///////////////////////////////////////////////////////////////
-        // 토큰으로 사용자 정보 받아오는 코드
         KakaoEmailReq kakaoEmailReq = kakaoService.getUserInfo(accessToken);
-        //////////////////////////////////////////////
-        // 가져온 사용자 정보로 DB 확인
         Consumer consumer = memberService.getMemberByConsumerID(kakaoEmailReq.getEmail());
         if(consumer == null) {
-            // DB에 없으면 회원 가입
             consumer = kakaoService.kakaoSignup(kakaoEmailReq);
         }
-        // 로그인 처리(JWT 토큰 발급)
         return ResponseEntity.ok().body(kakaoService.kakaoLogin(consumer));
     }
 }

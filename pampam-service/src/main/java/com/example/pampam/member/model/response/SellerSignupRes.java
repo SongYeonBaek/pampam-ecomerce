@@ -17,4 +17,6 @@ public class SellerSignupRes {
     private Boolean status;
     private String sellerBusinessNumber;
     private String image;
+
+
 }
