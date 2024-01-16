@@ -228,7 +228,7 @@ public class MemberService implements UserDetailsService {
             consumer = Consumer.builder()
                     .consumerIdx(consumer.getConsumerIdx())
                     .email(consumerUpdateReq.getEmail())
-                    .consumerPW(consumerUpdateReq.getConsumerPW())
+                    .consumerPW(passwordEncoder.encode(consumerUpdateReq.getConsumerPW()))
                     .consumerName(consumerUpdateReq.getConsumerName())
                     .consumerAddr(consumerUpdateReq.getConsumerAddr())
                     .consumerPhoneNum(consumerUpdateReq.getConsumerPhoneNum())
@@ -267,7 +267,7 @@ public class MemberService implements UserDetailsService {
             seller = Seller.builder()
                     .sellerIdx(seller.getSellerIdx())
                     .email(sellerUpdateReq.getEmail())
-                    .sellerPW(sellerUpdateReq.getSellerPW())
+                    .sellerPW(passwordEncoder.encode(sellerUpdateReq.getSellerPW()))
                     .sellerName(sellerUpdateReq.getSellerName())
                     .sellerAddr(sellerUpdateReq.getSellerAddr())
                     .sellerPhoneNum(sellerUpdateReq.getSellerPhoneNum())
@@ -307,9 +307,9 @@ public class MemberService implements UserDetailsService {
             consumerRepository.delete(Consumer.builder()
                     .consumerIdx(result.get().getConsumerIdx()).build());
 
-            SellerDeleteRes sellerDeleteRes = SellerDeleteRes.builder().email(result.get().getEmail()).build();
+            ConsumerDeleteRes consumerDeleteRes = ConsumerDeleteRes.builder().email(consumerDeleteReq.getEmail()).build();
 
-            return BaseResponse.successResponse("요청성공", sellerDeleteRes);
+            return BaseResponse.successResponse("요청성공", consumerDeleteRes);
         }
         return BaseResponse.failResponse("요청실패");
 
@@ -318,11 +318,10 @@ public class MemberService implements UserDetailsService {
         Optional<Seller> result = sellerRepository.findByEmail(sellerDeleteReq.getEmail());
 
         if (result.isPresent()) {
-            sellerRepository.delete(Seller.builder()
-                    .sellerIdx(result.get().getSellerIdx()).build());
+            sellerRepository.delete(result.get());
 
-            ConsumerDeleteRes consumerDeleteRes = ConsumerDeleteRes.builder().email(result.get().getEmail()).build();
-            BaseResponse baseResponse = BaseResponse.successResponse("요청성공", consumerDeleteRes);
+            SellerDeleteRes sellerDeleteRes = SellerDeleteRes.builder().email(sellerDeleteReq.getEmail()).build();
+            BaseResponse baseResponse = BaseResponse.successResponse("요청성공", sellerDeleteRes);
 
             return baseResponse;
         }
