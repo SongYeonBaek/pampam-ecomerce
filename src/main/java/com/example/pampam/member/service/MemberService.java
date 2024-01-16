@@ -123,7 +123,7 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public BaseResponse<Object> consumerLogin(ConsumerLoginReq consumerLoginReq) {
+    public BaseResponse<ConsumerLoginRes> consumerLogin(ConsumerLoginReq consumerLoginReq) {
         Optional<Consumer> consumer = consumerRepository.findByEmail(consumerLoginReq.getEmail());
 
         if (consumer.isPresent()) {

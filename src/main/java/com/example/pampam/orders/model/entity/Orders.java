@@ -26,11 +26,11 @@ public class Orders {
 
     Integer price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Consumer_idx")
     Consumer consumer;
 
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     private List<OrderedProduct> orderProductsList = new ArrayList<>();
 
 }
