@@ -7,14 +7,10 @@ import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.model.entity.ProductImage;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
-import com.example.pampam.product.model.response.GetProductListRes;
 import com.example.pampam.product.model.response.GetProductReadRes;
-import com.example.pampam.product.model.response.GetProductReadRes2;
 import com.example.pampam.product.model.response.PostProductResgisterRes;
-import com.example.pampam.product.repository.ProductImageRepository;
 import com.example.pampam.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.util.*;
 
 @Service
@@ -87,7 +82,7 @@ public class ProductService {
 
             List<ProductImage> productImages = product.getImages();
 
-             String filenames = "";
+            String filenames = "";
             for (ProductImage productImage : productImages) {
                 String filename = productImage.getImagePath();
                 filenames += filename + ",";
@@ -109,8 +104,8 @@ public class ProductService {
                     .build();
             productReadResList.add(getProductReadRes);
         }
-            // DtoToRes
-       return BaseResponse.successResponse("요청 성공", productReadResList);
+        // DtoToRes
+        return BaseResponse.successResponse("요청 성공", productReadResList);
     }
 
     public BaseResponse<GetProductReadRes> read(String email, Long idx) {
@@ -204,4 +199,3 @@ public class ProductService {
         }
     }
 }
-

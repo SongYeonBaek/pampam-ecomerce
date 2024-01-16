@@ -1,4 +1,4 @@
-package com.example.pampam.orders.model.entity;
+package com.example.pampam.orders.model.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortoneReq {
+public class GetPortOneRes {
     private Long id;
     private String name;
     private Integer price;
