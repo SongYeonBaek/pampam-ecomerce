@@ -22,7 +22,7 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
 
         List<Product> result = from(product)
                 .leftJoin(product.images).fetchJoin()
-                .leftJoin(product.sellerIdx())
+                .leftJoin(product.sellerIdx)
                 .distinct()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

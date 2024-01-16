@@ -1,5 +1,6 @@
 package com.example.pampam.orders.model.entity;
 
+import com.example.pampam.orders.model.response.GetPortOneRes;
 import lombok.*;
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentProducts {
-    private List<PortoneReq> products;
+    private List<GetPortOneRes> products;
 }
