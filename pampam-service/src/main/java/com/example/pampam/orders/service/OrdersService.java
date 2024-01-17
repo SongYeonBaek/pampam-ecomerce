@@ -1,6 +1,8 @@
 package com.example.pampam.orders.service;
 
 import com.example.pampam.common.BaseResponse;
+import com.example.pampam.exception.EcommerceApplicationException;
+import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.repository.ConsumerRepository;
 import com.example.pampam.orders.model.entity.OrderedProduct;
@@ -68,7 +70,7 @@ public class OrdersService {
             }
             return BaseResponse.successResponse("주문 완료", orderList);
         }
-        return BaseResponse.failResponse("주문 에러");
+        throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
     }
 
     public BaseResponse<List<OrdersListRes>> orderList(String email) {
@@ -96,13 +98,13 @@ public class OrdersService {
             for(OrderedProduct p : product.get().getOrderedProducts()){
                 impUidList.add(p.getOrders().getImpUid());
             }
+        } else {
+            throw new EcommerceApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
         for(String impUid : impUidList){
             paymentService.paymentCancel(impUid);
         }
-
-
         return  BaseResponse.successResponse("공동구매 전원 취소 완료", "[결제 취소] 인원 부족으로 인해 공동구매가 취소되었습니다.");
     }
 }

@@ -52,7 +52,7 @@ public class MemberService implements UserDetailsService {
 @Transactional
     public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
-            return BaseResponse.failResponse("요청실패");
+            return BaseResponse.failResponse(7000, "요청실패");
         }
         Consumer consumer = consumerRepository.save(Consumer.builder()
                 .email(consumerSignupReq.getEmail())
@@ -135,7 +135,7 @@ public class MemberService implements UserDetailsService {
         String saveFileName = saveFile(image);
 
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
-            return BaseResponse.failResponse("요청실패");
+            return BaseResponse.failResponse(7000, "요청실패");
         }
         Seller seller = sellerRepository.save(Seller.builder()
                 .email(sellerSignupReq.getEmail())
@@ -193,10 +193,10 @@ public class MemberService implements UserDetailsService {
 
                 return baseResponse;
             }else {
-                return BaseResponse.failResponse("요청실패");
+                return BaseResponse.failResponse(7000, "요청실패");
             }
         }
-        return BaseResponse.failResponse("요청실패");
+        return BaseResponse.failResponse(7000, "요청실패");
     }
 
     public BaseResponse sellerLogin(SellerLoginReq sellerLoginReq) {
@@ -214,10 +214,10 @@ public class MemberService implements UserDetailsService {
 
                 return  baseResponse;
             }else {
-                return BaseResponse.failResponse("요청실패");
+                return BaseResponse.failResponse(7000, "요청실패");
             }
         }
-        return BaseResponse.failResponse("요청실패");
+        return BaseResponse.failResponse(7000, "요청실패");
     }
 
     public BaseResponse consumerUpdate(ConsumerUpdateReq consumerUpdateReq) {
@@ -255,7 +255,7 @@ public class MemberService implements UserDetailsService {
 
             return baseResponse;
         } else {
-            return BaseResponse.failResponse("요청실패");
+            return BaseResponse.failResponse(7000, "요청실패");
         }
     }
 
@@ -311,7 +311,7 @@ public class MemberService implements UserDetailsService {
 
             return BaseResponse.successResponse("요청성공", consumerDeleteRes);
         }
-        return BaseResponse.failResponse("요청실패");
+        return BaseResponse.failResponse(7000, "요청실패");
 
     }
     public BaseResponse sellerDelete(SellerDeleteReq sellerDeleteReq) {
@@ -325,7 +325,7 @@ public class MemberService implements UserDetailsService {
 
             return baseResponse;
         }
-        return BaseResponse.failResponse("요청실패");
+        return BaseResponse.failResponse(7000, "요청실패");
 
     }
     public void sendEmail(SendEmailReq sendEmailReq) {

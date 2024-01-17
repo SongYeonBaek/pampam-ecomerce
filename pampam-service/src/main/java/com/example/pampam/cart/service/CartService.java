@@ -5,6 +5,8 @@ import com.example.pampam.cart.model.response.GetCartListRes;
 import com.example.pampam.cart.model.response.PostCartInRes;
 import com.example.pampam.cart.repository.CartRepository;
 import com.example.pampam.common.BaseResponse;
+import com.example.pampam.exception.EcommerceApplicationException;
+import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.repository.ConsumerRepository;
 import com.example.pampam.product.model.entity.Product;
@@ -42,7 +44,7 @@ public class CartService {
 
             return BaseResponse.successResponse("요청 성공", product);
         } else {
-            return BaseResponse.failResponse("에러 발생");
+            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
     }
 
@@ -65,7 +67,7 @@ public class CartService {
             }
             return BaseResponse.successResponse("요청 성공", cartList);
         } else {
-            return BaseResponse.failResponse("에러 발생");
+            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
     }
 
@@ -82,7 +84,7 @@ public class CartService {
             cartRepository.deleteById(cartIdx);
             return BaseResponse.successResponse("요청 성공", consumer.get().getEmail());
         } else {
-            return BaseResponse.failResponse("에러 발생");
+            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
     }
 }
