@@ -19,6 +19,6 @@ public class GetCartListRes {
     private String productName;
     @NotNull
     private Integer price;
-//    @NotNull
-//    private String image;
+    @NotNull
+    private String image;
 }

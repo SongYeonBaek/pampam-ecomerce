@@ -10,8 +10,7 @@ import com.example.pampam.product.model.entity.ProductImage;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.model.response.GetProductReadRes;
-import com.example.pampam.product.model.response.PatchProductRes;
-import com.example.pampam.product.model.response.PostProductResgisterRes;
+import com.example.pampam.product.model.response.PostProductRegisterRes;
 import com.example.pampam.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ public class ProductService {
     private final SellerRepository sellerRepository;
 
     // TODO: 상품 등록
-    public BaseResponse<PostProductResgisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
+    public BaseResponse<PostProductRegisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -62,7 +61,7 @@ public class ProductService {
 
 
         Long result = product.getIdx();
-        PostProductResgisterRes postProductResgisterRes = PostProductResgisterRes.builder()
+        PostProductRegisterRes postProductResgisterRes = PostProductRegisterRes.builder()
                 .idx(result)
                 .build();
 

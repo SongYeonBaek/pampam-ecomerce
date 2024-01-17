@@ -4,7 +4,6 @@ import com.example.pampam.exception.EcommerceApplicationException;
 import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
-import com.example.pampam.product.model.response.PostProductResgisterRes;
 import com.example.pampam.product.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
