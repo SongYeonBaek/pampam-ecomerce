@@ -6,6 +6,8 @@ import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.service.ProductService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.register(email,productRegisterReq,images));
     }
     @ApiOperation(value = "상품 목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "페이지 번호",
+                    required = true, dataType = "string", defaultValue = ""),
+            @ApiImplicitParam(name = "size", value = "조회 할 상품의 개수",
+                    required = true, dataType = "string", paramType = "query", defaultValue = "")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public ResponseEntity<Object> list(@AuthenticationPrincipal String email,Integer page, Integer size) {
         return ResponseEntity.ok().body(productService.list(email,page, size));

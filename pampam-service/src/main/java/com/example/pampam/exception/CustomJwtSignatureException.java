@@ -5,23 +5,15 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class EcommerceApplicationException extends RuntimeException{
-
+public class CustomJwtSignatureException extends RuntimeException{
     private ErrorCode errorCode;
     private String message;
     private Integer code;
 
-    public EcommerceApplicationException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-        this.message = null;
-        this.code = null;
-    }
-
-    public EcommerceApplicationException(ErrorCode errorCode, String message) {
+    public CustomJwtSignatureException(ErrorCode errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
     }
-
 
     public String getMessage() {
         if (message == null) {
