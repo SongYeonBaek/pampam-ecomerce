@@ -46,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
             String username = JwtUtils.getUsername(token, secretKey);
 
 
-
             // db에서 엔티티 조회
             // member.getUsername();
 
@@ -93,7 +92,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
             }
-        }catch (ServletException e) {
+        }
+        catch (ServletException e) {
             throw new EcommerceApplicationException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 //        catch (SignatureException e) {
@@ -101,5 +101,5 @@ public class JwtFilter extends OncePerRequestFilter {
 //            throw new CustomJwtSignatureException(ErrorCode.INVALID_TOKEN, e.getMessage());
 //        }
 
+        }
     }
-}
