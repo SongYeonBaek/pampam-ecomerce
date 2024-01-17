@@ -59,13 +59,15 @@ public class OrdersService {
                     .build());
 
             //Custom Data 안에 있던 Product 리스트 하나씩 꺼내와서 OrderedProduct에 저장
-            for (GetPortOneRes portoneReq : paymentProducts.getProducts()) {
+            for (GetPortOneRes getPortOneRes : paymentProducts.getProducts()) {
                 orderedProductRepository.save(OrderedProduct.builder()
                         .orders(order)
-                        .product(Product.builder().idx(portoneReq.getId()).build())
+                        .product(Product.builder().idx(getPortOneRes.getId()).build())
                         .build());
                 orderList.add(PostOrderInfoRes.builder()
-                        .impUid(portoneReq.getName())
+                        .impUid(impUid)
+                        .productName(getPortOneRes.getName())
+                        .localDate(order.getOrderDate())
                         .build());
             }
             return BaseResponse.successResponse("주문 완료", orderList);
