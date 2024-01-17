@@ -6,6 +6,7 @@ import com.example.pampam.orders.model.response.PostOrderInfoRes;
 import com.example.pampam.orders.service.OrdersService;
 import com.example.pampam.orders.service.PaymentService;
 import com.example.pampam.product.repository.ProductRepository;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +17,17 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@Api(value = "주문/결제 컨트롤러 v1", tags = "주문/결제 API")
 @RequiredArgsConstructor
 @RequestMapping("/order")
 public class OrdersController {
     private final OrdersService ordersService;
     private final PaymentService paymentService;
-    private final ProductRepository productRepository;
 
+    @ApiOperation(value = "상품 주문")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "impUid", value = "주문 번호 입력",
+                    required = true, dataType = "string", paramType = "query", defaultValue = ""))
     @RequestMapping(method = RequestMethod.POST,value = "/validation")
     public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@AuthenticationPrincipal String email, String impUid){
         try{
@@ -32,28 +37,40 @@ public class OrdersController {
 
                 return ordersService.createOrder(email, impUid);
             }
-            return BaseResponse.failResponse("결제가 유효하지 않아 주문 취소.");
+            return BaseResponse.failResponse("결제가 유효하지 않아 주문 취소");
         } catch (Exception e){
-            return BaseResponse.failResponse("주문 취소.");
+            return BaseResponse.failResponse("주문 취소");
         }
     }
 
     //Consumer의 주문 내역을 확인
-    @RequestMapping(value = "/list")
+    @ApiOperation(value = "주문 내역 조회")
+    @RequestMapping(method = RequestMethod.GET,value = "/list")
     public BaseResponse<List<OrdersListRes>>  orderList(@AuthenticationPrincipal String email) {
         return ordersService.orderList(email);
     }
 
     //Consumer가 구매를 취소
-    @RequestMapping(method = RequestMethod.POST,value = "/cancel")
+    @ApiOperation(value = "주문 취소")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "impUid", value = "취소할 주문의 주문 번호 입력",
+                    required = true, dataType = "string", paramType = "query", defaultValue = ""))
+    @RequestMapping(method = RequestMethod.GET,value = "/cancel")
     public BaseResponse<String> orderCancel(String impUid) throws IOException {
         return paymentService.paymentCancel(impUid);
     }
 
     //마감 시간이 지나고 인원 수가 다 차지 않았다면 결제를 취소
-    @RequestMapping(method = RequestMethod.POST,value = "/group/cancel")
+    @ApiOperation(value = "공동 구매 전체 취소")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "productId", value = "공동 구매를 취소할 상품의 상품 번호 입력",
+                    required = true, dataType = "string", paramType = "query", defaultValue = ""))
+    @ApiResponses({  // Response Message에 대한 Swagger 설명
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "Exception")
+    })
+    @RequestMapping(method = RequestMethod.GET,value = "/group/cancel")
     public BaseResponse<String> groupCancel(Long productId) throws IOException {
         return ordersService.groupCancel(productId);
     }
-
 }

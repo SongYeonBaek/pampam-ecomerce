@@ -101,6 +101,11 @@
             <artifactId>iamport-rest-client-java</artifactId>
             <version>0.2.23</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
     </dependencies>
 
