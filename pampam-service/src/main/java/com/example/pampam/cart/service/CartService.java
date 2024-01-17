@@ -62,7 +62,7 @@ public class CartService {
                         .idx(cart.getIdx())
                         .productName(product.getProductName())
                         .price(product.getPrice())
-//                        .image(product.getImages().get(0).getImagePath())
+                        .image(product.getImages().get(0).getImagePath())
                         .build());
             }
             return BaseResponse.successResponse("요청 성공", cartList);

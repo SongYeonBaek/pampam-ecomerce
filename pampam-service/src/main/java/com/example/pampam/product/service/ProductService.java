@@ -10,7 +10,7 @@ import com.example.pampam.product.model.entity.ProductImage;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.model.response.GetProductReadRes;
-import com.example.pampam.product.model.response.PostProductResgisterRes;
+import com.example.pampam.product.model.response.PostProductRegisterRes;
 import com.example.pampam.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public class ProductService {
     private final SellerRepository sellerRepository;
 
     // TODO: 상품 등록
-    public BaseResponse<PostProductResgisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
+    public BaseResponse<PostProductRegisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -61,7 +61,7 @@ public class ProductService {
 
 
         Long result = product.getIdx();
-        PostProductResgisterRes postProductResgisterRes = PostProductResgisterRes.builder()
+        PostProductRegisterRes postProductResgisterRes = PostProductRegisterRes.builder()
                 .idx(result)
                 .build();
 
@@ -155,7 +155,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void update(String email, PatchProductUpdateReq patchProductUpdateReq){
+    public BaseResponse<Long> update(String email, PatchProductUpdateReq patchProductUpdateReq){
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -186,11 +186,17 @@ public class ProductService {
                 existingProduct.setImages(patchProductUpdateReq.getProductImages());
             }
             // 변경된 엔티티 저장
-            productRepository.save(existingProduct);
+            Product updateProduct = productRepository.save(existingProduct);
+            return BaseResponse.successResponse("수정 성공", updateProduct.getIdx());
+        } else {
+            throw new EcommerceApplicationException(
+                    ErrorCode.PRODUCT_NOT_FOUND,
+                    String.format("%s를 찾을 수 없습니다.", result.get().getProductName()),
+                    ErrorCode.PRODUCT_NOT_FOUND.getCode());
         }
     }
 
-    public void delete(String email, Long idx) {
+    public BaseResponse<Long> delete(String email, Long idx) {
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
@@ -204,6 +210,13 @@ public class ProductService {
             Product product1 = product.get();
             Long productIdx = product1.getIdx();
             productRepository.deleteById(productIdx);
+
+            return BaseResponse.successResponse("상품 삭제 성공", productIdx);
+        } else {
+            throw new EcommerceApplicationException(
+                    ErrorCode.PRODUCT_NOT_FOUND,
+                    String.format("%s를 찾을 수 없습니다.", product.get().getProductName()),
+                            ErrorCode.PRODUCT_NOT_FOUND.getCode());
         }
     }
 }

@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostProductResgisterRes
-{         private Long idx ;
+public class PostProductRegisterRes {
+    private Long idx;
 }

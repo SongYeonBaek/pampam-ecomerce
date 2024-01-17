@@ -10,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +28,26 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @Column(nullable = false)
+    @Size(max = 100)
     private String productName;
+
+    @Column(nullable = false)
+    @Min(0)
     private Integer price;
+
+    @Column(nullable = false)
+    @Min(0)
     private Integer salePrice;
+
+    @Column(nullable = false)
+    @Size(max = 2000)
     private String productInfo;
+
+    @Column(nullable = false)
     private Integer people; // 모집 인원 수
+
+    @Column(nullable = false)
     private Integer peopleCount; // 모인 인원 수
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM.dd HH.mm", timezone="Asia/Seoul")

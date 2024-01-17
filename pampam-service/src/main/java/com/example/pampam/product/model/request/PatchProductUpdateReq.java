@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @Data
 public class PatchProductUpdateReq {
-    @NotBlank
+    @NotBlank(message = "상품을 선택해주세요.")
     private Long id;
     private String productName;
     private Integer price;

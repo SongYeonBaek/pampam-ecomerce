@@ -17,6 +17,7 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @Column(nullable = false)
     private String imagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
