@@ -1,6 +1,8 @@
 package com.example.pampam.orders.controller;
 
 import com.example.pampam.common.BaseResponse;
+import com.example.pampam.exception.EcommerceApplicationException;
+import com.example.pampam.exception.ErrorCode;
 import com.example.pampam.orders.model.response.OrdersListRes;
 import com.example.pampam.orders.model.response.PostOrderInfoRes;
 import com.example.pampam.orders.service.OrdersService;
@@ -37,9 +39,9 @@ public class OrdersController {
 
                 return ordersService.createOrder(email, impUid);
             }
-            return BaseResponse.failResponse("결제가 유효하지 않아 주문 취소");
+            throw new EcommerceApplicationException(ErrorCode.NOT_MATCH_AMOUNT);
         } catch (Exception e){
-            return BaseResponse.failResponse("주문 취소");
+            throw new EcommerceApplicationException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 

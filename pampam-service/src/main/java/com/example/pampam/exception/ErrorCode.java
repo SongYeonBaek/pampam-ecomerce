@@ -19,7 +19,7 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(5000, HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
 
 
-
+    NOT_MATCH_AMOUNT(6000, HttpStatus.BAD_REQUEST, "입금하신 금액이 상품의 가격과 다릅니다."),
 
 
     INTERNAL_SERVER_ERROR(7000, HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 에러가 발생하였습니다.")

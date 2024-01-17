@@ -34,6 +34,11 @@ public class CategoryService {
         List<GetSearchRes> searchList = new ArrayList<>();
 
         for (CategoryToProduct categoryToProduct : category) {
+
+            if (categoryToProduct == null) {
+                throw new EcommerceApplicationException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+
             searchList.add(GetSearchRes.builder()
                     .productIdx(categoryToProduct.getProduct().getIdx())
                     .productName(categoryToProduct.getProduct().getProductName())
