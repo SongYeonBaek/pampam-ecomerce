@@ -22,6 +22,7 @@
         <module>seller-service</module>
         <module>email-service</module>
         <module>seller-image-service</module>
+        <module>discovery</module>
     </modules>
     <properties>
         <java.version>11</java.version>
