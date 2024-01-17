@@ -67,10 +67,7 @@ public class OrdersController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = "productId", value = "공동 구매를 취소할 상품의 상품 번호 입력",
                     required = true, dataType = "string", paramType = "query", defaultValue = ""))
-    @ApiResponses({  // Response Message에 대한 Swagger 설명
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 500, message = "Exception")
-    })
+
     @RequestMapping(method = RequestMethod.GET,value = "/group/cancel")
     public BaseResponse<String> groupCancel(Long productId) throws IOException {
         return ordersService.groupCancel(productId);

@@ -5,6 +5,8 @@ import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.product.model.entity.Product;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,10 +24,13 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @Column(nullable=false)
     private String impUid;
 
+    @Column(nullable=false)
     private LocalDate orderDate;
 
+    @Column(nullable=false)
     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
