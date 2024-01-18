@@ -1,41 +1,29 @@
-<h1 align="center">로컬 푸드 팜팜(Farmpam) <img src="img/free-icon-corn-3413487.png" width="25" height="25"/></h1>
+<h1 align="center">로컬 푸드 팜팜(Farmpam) 🌽: </h1>
 <div align="center"> 
- <img src="img/20240117_094231.png"/>
+ <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/8aed3a9f-e5cc-4bf5-b8e6-9cfdce5a3a2f"/>
 </div>
 프로젝트명 '로컬 푸드 팜팜' 은 지역 특산물 유통의 시작을 의미하는 농장의 '팜(farm)' 과 지역 특산물을 구매하고자 하는 수요가 있는 소비자들에게 판매를 중개하겠다는 '팜' 이렇게 두 가지 의미를 동시에 담고 있습니다.
 
 ## 🧑‍🤝‍🧑 팀원
 
-🐯 **정동섭**
-
-🐶 **박현범**
-
-🐺 **양호신**
-
-🐱 **백송연**
+🐯 **정동섭** 🐶 **박현범** 🐺 **양호신** 🐱 **백송연** 🐧: **김도현** 
 
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href=""><img src="img/hosin.png" width="100px;" alt=""/><br /><sub><b> 팀장 : 양호신</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="img/dongsup.png" width="100px;" alt=""/><br /><sub><b> 팀원 : 정동섭</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="img/hyunbum.png" width="100px;" alt=""/><br /><sub><b> 팀원 : 박현범</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/71e60cdb-cc1c-4f25-829c-9e6e33d4fd8c" width="100px;" alt=""/><br /><sub><b> 팀장 : 양호신</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/d6210ade-6e08-4f1a-a893-a96e064a7c8f" width="100px;" alt=""/><br /><sub><b> 팀원 : 정동섭</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/852c7c08-43c8-4aba-bb02-894ad52f7daa" width="100px;" alt=""/><br /><sub><b> 팀원 : 박현범</b></sub></a><br /></td>
      <tr/>
-      <td align="center"><a href=""><img src="img/songyeon.jpeg" width="100px;" alt=""/><br /><sub><b> 팀원 : 백송연</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="img\KakaoTalk_20231124_144126232.jpg" width="100px;" alt=""/><br /><sub><b> 팀원 : 김도현 </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/7db0d8e5-d406-46f3-9164-aa7b23b9a69f" width="100px;" alt=""/><br /><sub><b> 팀원 : 백송연</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/262aa149-cebf-4e86-a422-29ed9349d745" width="100px;" alt=""/><br /><sub><b> 팀원 : 김도현 </b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
 
 ### ✔️Back-end
 
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
-<img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> 
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
-
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green">
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow">
-<img src="https://img.shields.io/badge/Jpa-E34F26?style=for-the-badge&logo=Jpa&logoColor=white">
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow"> <img src="https://img.shields.io/badge/Jpa-E34F26?style=for-the-badge&logo=Jpa&logoColor=white">
 
 ## ⭐ 프로젝트 설명
 각각의 장점이 있는 두가지 아이템을 조합해 의미있는 거래 중개 플랫폼을 구축해 보고자  
