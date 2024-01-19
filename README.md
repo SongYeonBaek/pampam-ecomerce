@@ -69,16 +69,7 @@
 
 
 
-## 🔍 프로젝트 설계
-시스템 아키텍처
-
-- 모놀리스 아키텍처
-<div align="center"> 
- <img src="img/mono.png"/>
-</div>  
-
-- MSA 아키텍처
-  
+## 🔍 프로젝트 설계  
 ## <img src="https://private-user-images.githubusercontent.com/149215818/297922925-e0f6e7c4-ed78-44ff-9bf8-54bc45ab3a2c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDU2MjcwNTMsIm5iZiI6MTcwNTYyNjc1MywicGF0aCI6Ii8xNDkyMTU4MTgvMjk3OTIyOTI1LWUwZjZlN2M0LWVkNzgtNDRmZi05YmY4LTU0YmM0NWFiM2EyYy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMTE5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDExOVQwMTEyMzNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03MzE3ZDUxOTMwZTBlZjY5ZTU4NjRjZTFiMDYzYmRiMTVlM2MzMjY1ZjI4MjA0Y2RkOWQ2N2RhZTE0M2YwYTYyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.qxDzphKBmurXwAxFgn-nK6z7rMezxoUtJuHvuUFMdXM" width="20" height="20"/> 소프트웨어 아키텍처
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/2.-%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">소프트웨어 아키텍쳐</a>
 
