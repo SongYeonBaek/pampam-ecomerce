@@ -78,7 +78,7 @@
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/files/13983056/FARMPAM.xlsx">요구사항 명세서</a>
 
 
-## <img src="![feature-selection](https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/a345f688-56fd-436e-bf91-4f01562c0a6e)" width="20" height="20"/> 기능 명세서
+## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/a345f688-56fd-436e-bf91-4f01562c0a6e" width="20" height="20"/> 기능 명세서
 <img src ="https://private-user-images.githubusercontent.com/149215818/297925097-7acae907-174d-445e-9a76-2c114b450ee1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDU2MjgwMjgsIm5iZiI6MTcwNTYyNzcyOCwicGF0aCI6Ii8xNDkyMTU4MTgvMjk3OTI1MDk3LTdhY2FlOTA3LTE3NGQtNDQ1ZS05YTc2LTJjMTE0YjQ1MGVlMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMTE5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDExOVQwMTI4NDhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wZThhOTA0ODJkNzIzNjQ2MmQyNjM1MzQ3NzEyNjg3ZDNjM2E3MjU5OTY2MmUwYzY1YTY0ODJlYjEzNjhkMzE5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.a35KO7kbGdj7cLFwHqZ0d8JKncl-wjAH0QNRAh8j_7Q" width="80" height="20"/>
 
 
