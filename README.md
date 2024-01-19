@@ -74,8 +74,7 @@
 ## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/bc4befdd-26d1-405d-bb07-be67a50f8dd1" width="20" height="20"/> 시스템 아키텍처
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/3.-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">시스템 아키텍쳐</a>
 
-## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/931176e3-5f72-4235-868c-06e0f803dc2d
-" width="20" height="20"/> 요구사항 명세서
+## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/931176e3-5f72-4235-868c-06e0f803dc2d" width="20" height="20"/> 요구사항 명세서
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/files/13983056/FARMPAM.xlsx">요구사항 명세서</a>
 
 
