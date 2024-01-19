@@ -85,4 +85,4 @@ swagger-ui
 
 
 ## 💡 테스트 및 결과
-테스트 결과
+<a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/4.-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84)https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/4.-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84"> 테스트 및 결과</a>
