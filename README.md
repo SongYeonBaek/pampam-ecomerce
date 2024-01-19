@@ -68,7 +68,7 @@
 ## 🎯 프로젝트 목표
 높은 품질의 지역 특산물을 공동 구매를 통해 저렴한 가격으로 구매 할 수 있도록 중개하는 것이 저희 팜팜 프로젝트의 개발 목표입니다.
 
-## <img src="https://private-user-images.githubusercontent.com/149215818/297922925-e0f6e7c4-ed78-44ff-9bf8-54bc45ab3a2c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDU2MjcwNTMsIm5iZiI6MTcwNTYyNjc1MywicGF0aCI6Ii8xNDkyMTU4MTgvMjk3OTIyOTI1LWUwZjZlN2M0LWVkNzgtNDRmZi05YmY4LTU0YmM0NWFiM2EyYy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMTE5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDExOVQwMTEyMzNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03MzE3ZDUxOTMwZTBlZjY5ZTU4NjRjZTFiMDYzYmRiMTVlM2MzMjY1ZjI4MjA0Y2RkOWQ2N2RhZTE0M2YwYTYyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.qxDzphKBmurXwAxFgn-nK6z7rMezxoUtJuHvuUFMdXM" width="20" height="20"/> 소프트웨어 아키텍처
+## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/7acae907-174d-445e-9a76-2c114b450ee1" width="20" height="20"/> 소프트웨어 아키텍처
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/2.-%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">소프트웨어 아키텍쳐</a>
 
 ## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/bc4befdd-26d1-405d-bb07-be67a50f8dd1" width="20" height="20"/> 시스템 아키텍처
