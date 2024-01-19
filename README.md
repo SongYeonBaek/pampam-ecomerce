@@ -27,7 +27,7 @@
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow"> <img src="https://img.shields.io/badge/Jpa-E34F26?style=for-the-badge&logo=Jpa&logoColor=white">
 
 ## ⭐ 프로젝트 설명
-<img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/c7557c99-37ef-439b-aa09-25263e1f2f7c" width="400" height="360">
+<img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/c7557c99-37ef-439b-aa09-25263e1f2f7c" width="400" height="360"><br>
 각각의 장점이 있는 두가지 아이템을 조합해 의미있는 거래 중개 플랫폼을 구축해 보고자  
 지역 경제 활성화에 이바지 할 수 있다는 장점이 있는 지역 특산물과 저렴한 가격으로 물건을 판매와 구매 할 수 있다는 장점을 가진 공동구매를 합쳐 해당 프로젝트를 진행하게 되었습니다.
 
