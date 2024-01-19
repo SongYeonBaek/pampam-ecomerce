@@ -80,7 +80,7 @@
 - MSA 아키텍처
 
 ## <img src="icon/system.png" width="20" height="20"/> 시스템 아키텍처
-<a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/1.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%A0%95%EB%B3%B4>시스템 아키텍쳐</a>
+<a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/1.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%A0%95%EB%B3%B4> 시스템 아키텍쳐</a>
 
 ## <img src="icon/soft.png" width="20" height="20"/> 소프트웨어 아키텍처
 <a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/wiki/2.-%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">소프트웨어 아키텍쳐</a>
