@@ -89,7 +89,7 @@
 
 
 ## <img src="icon/requirements-12216790.png" width="20" height="20"/> 요구사항 명세서
-요구사항 정의
+<a href="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/files/13983056/FARMPAM.xlsx">[FARMPAM 요구사항 명세서.xlsx]</a>
 
 
 ## <img src="icon/feature-selection.png" width="20" height="20"/> 기능 명세서
