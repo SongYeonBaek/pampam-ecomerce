@@ -19,19 +19,24 @@ public class EmailCertPersistenceAdapter implements VerifyEmailCertOutport, Crea
         return emailCertRepository.save(EmailCertEntity.builder()
                 .email(emailCert.getEmail())
                 .uuid(emailCert.getUuid())
+                        .status(false)
                 .build());
     }
 
 
     @Override
-    public Boolean verifyEmailCert(EmailCert emailCert) {
+    public EmailCertEntity verifyEmailCert(EmailCert emailCert) {
         Optional<EmailCertEntity> user = emailCertRepository.findByEmail(emailCert.getEmail());
 
         if (user.isPresent()) {
             if (user.get().getUuid().equals(emailCert.getUuid())) {
-                return false;
+                return emailCertRepository.save(EmailCertEntity.builder()
+                        .idx(user.get().getIdx())
+                        .email(user.get().getEmail())
+                                .uuid(user.get().getUuid())
+                        .status(true).build());
             } else {
-                return true;
+                return null;
             }
         } else {
             return null;

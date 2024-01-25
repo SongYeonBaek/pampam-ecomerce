@@ -16,7 +16,7 @@ public class CreateEmailCertProducer implements CreateEmailCertEventPort {
     @Override
     public void createEmailCertEvent(SellerImage sellerImage) {
         ProducerRecord<String, String> record =
-                new ProducerRecord<>("emailcert", ""+sellerImage.getId(), sellerImage.getEmail());
+                new ProducerRecord<>("signup", ""+sellerImage.getId(), sellerImage.getEmail());
 
         kafkaTemplate.send(record);
     }

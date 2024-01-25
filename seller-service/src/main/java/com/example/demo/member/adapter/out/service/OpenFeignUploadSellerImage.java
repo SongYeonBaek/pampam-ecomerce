@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-@FeignClient(name = "ProductImage", url = "http://localhost:8083/seller", configuration = CommonsMultipartResolver.class)
+@FeignClient(name = "ProductImage", url = "http://localhost:7030/seller", configuration = CommonsMultipartResolver.class)
 public interface OpenFeignUploadSellerImage {
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

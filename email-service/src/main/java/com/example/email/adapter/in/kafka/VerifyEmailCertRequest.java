@@ -10,5 +10,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VerifyEmailCertRequest {
-    Map<String, String> record;
+    private String email;
+    private String uuid;
 }
