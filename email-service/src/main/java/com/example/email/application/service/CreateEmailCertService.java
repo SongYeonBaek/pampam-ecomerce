@@ -29,6 +29,7 @@ public class CreateEmailCertService implements CreateEmailCertInport {
                 .idx(emailInfo.getIdx())
                 .email(emailInfo.getEmail())
                 .uuid(emailInfo.getUuid())
+                .status(emailCert.getStatus())
                 .build();
 
     }

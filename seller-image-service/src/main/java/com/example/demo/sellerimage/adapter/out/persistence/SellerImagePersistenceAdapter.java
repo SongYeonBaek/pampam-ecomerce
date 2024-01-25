@@ -1,13 +1,13 @@
 package com.example.demo.sellerimage.adapter.out.persistence;
 
 import com.example.demo.common.PersistenceAdapter;
-import com.example.demo.sellerimage.application.port.out.SellerImagePort;
+import com.example.demo.sellerimage.application.port.out.SellerImageOutport;
 import com.example.demo.sellerimage.domain.SellerImage;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class SellerImagePersistenceAdapter implements SellerImagePort {
+public class SellerImagePersistenceAdapter implements SellerImageOutport {
     private final SpringDataSellerImageRepository imageRepository;
     @Override
     public SellerImage registerSellerImage(SellerImage sellerImage) {

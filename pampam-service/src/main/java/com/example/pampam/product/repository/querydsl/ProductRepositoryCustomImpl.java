@@ -1,6 +1,7 @@
 package com.example.pampam.product.repository.querydsl;
 
 import com.example.pampam.product.model.entity.Product;
+
 import com.example.pampam.product.model.entity.QProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

@@ -9,4 +9,5 @@ public class EmailCert {
     private final Long idx;
     private final String email;
     private final String uuid;
+    private final Boolean status;
 }

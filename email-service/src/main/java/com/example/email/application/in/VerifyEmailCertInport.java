@@ -1,5 +1,7 @@
 package com.example.email.application.in;
 
+import com.example.email.adapter.out.persistence.EmailCertEntity;
+
 public interface VerifyEmailCertInport {
-    Boolean verifyCertEmail(VerifyEmailCertCommand command);
+    EmailCertEntity verifyCertEmail(VerifyEmailCertCommand command);
 }

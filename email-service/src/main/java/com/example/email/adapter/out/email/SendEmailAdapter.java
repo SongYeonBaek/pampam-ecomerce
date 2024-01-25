@@ -19,7 +19,7 @@ public class SendEmailAdapter implements SendEmailOutport {
 
         mailMessage.setTo(emailCert.getEmail());
         mailMessage.setSubject("[팜팜] 이메일 인증 절차를 완료해주세요.");
-        mailMessage.setText("http://localhost:7071/member/verify?email="
+        mailMessage.setText("http://localhost:7020/email/verify?email="
                 + emailCert.getEmail() + "&uuid=" + emailCert.getUuid());
         emailSender.send(mailMessage);
     }

@@ -22,4 +22,5 @@ public class EmailCertEntity {
     private Long idx;
     private String email;
     private String uuid;
+    private Boolean status;
 }

@@ -7,9 +7,8 @@ import lombok.NonNull;
 @Builder
 @Data
 public class SignupMemberCommand {
-    @NonNull
+
     private final String email;
-    @NonNull
     private final String password;
 
 
