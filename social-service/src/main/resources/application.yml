@@ -1,0 +1,47 @@
+server:
+  port: 7040
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EURECA_URL}
+
+spring:
+  application:
+    name: product-image-service
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_URL}
+
+  datasource:
+    url: ${DB_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+
+#cloud:
+#  aws:
+#    s3:
+#      bucket: ehdtjq2024-s3
+#    credentials:
+#      access-key: AKIAY7J2K4VR5DDNRXTJ
+#      secret-key: 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
+#    region:
+#      static: ap-northeast-2
+#      auto: false
+#    stack:
+#      auto: false

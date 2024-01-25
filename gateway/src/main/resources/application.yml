@@ -1,0 +1,30 @@
+server:
+  port: 7070
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ${ROUTE_MEMBER_ID}
+          uri: ${ROUTE_MEMBER_URI}
+          predicates:
+            - ${ROUTE_MEMBER_PATH}
+        - id: ${ROUTE_SELLER_ID}
+          uri: ${ROUTE_SELLER_URI}
+          predicates:
+            - ${ROUTE_SELLER_PATH}
+          filters:
+            - AuthorizationHeaderFilter
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EURECA_URL}
+
