@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   mail:
     host: smtp.gmail.com
     port: 587
@@ -21,33 +24,37 @@ spring:
     password: ${PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
     show-sql: true
 
 jwt:
-  secret-key: ${JWT_SECRET_KEY}
+  secret-key: ${JWT_TOKEN}
   token:
     expired-time-ms: ${TOKEN_EXPIRED_TIME_MS}
 
 
-#project:
-#  upload:
-#    path: C:\Users\Playdata\IdeaProjects\ex\demo\src\main\resources\static\images
+project:
+  upload:
+    path: C:\Users\Playdata\IdeaProjects\ex\demo\src\main\resources\static\images
 
 
 cloud:
   aws:
     s3:
-      bucket: ehdtjq2024-s3
+      bucket: ${S3_BUCKET}
     credentials:
-      access-key: AKIAY7J2K4VR5DDNRXTJ
-      secret-key: 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
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
     region:
-      static: ap-northeast-2
+      static: ${REGION_STATIC}
       auto: false
     stack:
       auto: false
+
+imp:
+  apiKey: ${IMP_KEY}
+  secretKey: ${IMP_SECRET}
 

@@ -12,7 +12,10 @@ import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.model.response.GetProductReadRes;
 import com.example.pampam.product.model.response.PostProductRegisterRes;
 import com.example.pampam.product.repository.ProductRepository;
+import com.example.pampam.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,20 +32,20 @@ public class ProductService {
     private final ImageSaveService imageSaveService;
     private final SellerRepository sellerRepository;
 
-    // TODO: 상품 등록
-    public BaseResponse<PostProductRegisterRes> register(String email, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
+    @Value("${jwt.secret-key}")
+    private String secretKey;
 
-        Optional<Seller> seller = sellerRepository.findByEmail(email);
+    public BaseResponse<PostProductRegisterRes> register(String token, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
 
-        Seller user;
+        token = JwtUtils.replaceToken(token);
 
-        if (seller.isPresent()) {
-            user = seller.get();
-        } else throw new EcommerceApplicationException(
-                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
+        Claims sellerInfo = JwtUtils.getSellerInfO(token, secretKey);
 
-        Product product;
-        product = productRepository.save(Product.builder()
+        if (sellerInfo.get("authority", String.class).equals("SELLER")) {
+
+        }
+
+        Product product = productRepository.save(Product.builder()
                 .productName(productRegisterReq.getProductName())
                 .productInfo(productRegisterReq.getProductInfo())
                 .price(productRegisterReq.getPrice())
@@ -51,7 +54,11 @@ public class ProductService {
                 .closeAt(productRegisterReq.getCloseAt())
                 .people(productRegisterReq.getPeople())
                 .peopleCount(productRegisterReq.getPeopleCount())
-                .sellerIdx(user)
+                .sellerIdx(sellerInfo.get("idx", Long.class))
+                .sellerEmail(sellerInfo.get("email", String.class))
+                .sellerName(sellerInfo.get("name", String.class))
+                .sellerPhoneNum(sellerInfo.get("phoneNum", String.class))
+                .sellerAddr(sellerInfo.get("address", String.class))
                 .build());
 
         for (MultipartFile uploadFile : images) {
@@ -102,7 +109,7 @@ public class ProductService {
                     .salePrice(product.getSalePrice())
                     .productInfo(product.getProductInfo())
                     .filename(filenames)
-                    .sellerIdx(product.getSellerIdx())
+//                    .sellerIdx(product.getIdx())
                     .peopleCount(product.getPeopleCount())
                     .startAt(product.getStartAt())
                     .closeAt(product.getCloseAt())
@@ -143,7 +150,7 @@ public class ProductService {
                     .salePrice(product.getSalePrice())
                     .productInfo(product.getProductInfo())
                     .filename(filenames)
-                    .sellerIdx(product.getSellerIdx())
+//                    .sellerIdx(product.getSellerIdx())
                     .peopleCount(product.getPeopleCount())
                     .startAt(product.getStartAt())
                     .closeAt(product.getCloseAt())

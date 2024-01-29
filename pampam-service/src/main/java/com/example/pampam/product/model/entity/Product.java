@@ -56,14 +56,16 @@ public class Product {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
     private Date closeAt;
 
+    // 판매자 정보
+    private Long sellerIdx;
+    private String sellerEmail;
+    private String sellerName;
+    private String sellerAddr;
+    private String sellerPhoneNum;
+
     // TODO: 연관관계 설정 후 외래키 지정
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
-
-    // 판매자 테이블과 연관 관계 매핑 설정 완료
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Seller_ID")
-    private Seller sellerIdx ;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
     private List<CategoryToProduct> categoryList;

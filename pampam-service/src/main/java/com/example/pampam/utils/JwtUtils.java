@@ -7,11 +7,17 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtUtils {
+
+
+
     public static String generateAccessToken(Consumer member, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("email", member.getEmail());
@@ -64,11 +70,23 @@ public class JwtUtils {
         return extractAllClaims(token, key).get("idx", Long.class);
     }
 
+    public static Claims getSellerInfO(String token, String key) {
+        return extractAllClaims(token, key);
+    }
+
     public static Claims extractAllClaims(String token, String key) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSignKey(key))
+                .setSigningKey(Keys.hmacShaKeyFor(key.getBytes()))
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public static String replaceToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.split(" ")[1];
+        }
+
+        return token;
     }
 }

@@ -44,7 +44,7 @@ public class CategoryService {
                     .productName(categoryToProduct.getProduct().getProductName())
                     .price(categoryToProduct.getProduct().getPrice())
                     .image(categoryToProduct.getProduct().getImages().get(0).getImagePath())
-                    .sellerIdx(categoryToProduct.getProduct().getSellerIdx().getSellerIdx())
+//                    .sellerIdx(categoryToProduct.getProduct().getSellerIdx().getSellerIdx())
                     .build());
         }
 

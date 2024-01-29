@@ -26,7 +26,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -45,3 +45,8 @@ cloud:
       auto: false
     stack:
       auto: false
+
+jwt:
+  secret-key: ${JWT_TOKEN}
+  token:
+    expired-time-ms: ${TOKEN_EXPIRED_TIME_MS}
