@@ -45,11 +45,6 @@ public class SignupSellerService implements SignupSellerInport {
         return Seller.builder()
                 .id(sellerJpaEntity.getId())
                 .email(sellerJpaEntity.getEmail())
-                .sellerPW(sellerJpaEntity.getSellerPW())
-                .sellerName(sellerJpaEntity.getSellerName())
-                .sellerAddr(sellerJpaEntity.getSellerAddr())
-                .sellerPhoneNum(sellerJpaEntity.getSellerPhoneNum())
-                .sellerBusinessNumber(sellerJpaEntity.getSellerBusinessNumber())
                 .build();
     }
 }

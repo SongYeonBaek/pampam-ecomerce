@@ -25,5 +25,6 @@ public class SellerJpaEntity {
     private String sellerAddr;
     private String sellerPhoneNum;
     private String sellerBusinessNumber;
+    private String authority;
 //    private Boolean status;
 }

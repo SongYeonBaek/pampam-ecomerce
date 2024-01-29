@@ -21,7 +21,11 @@ public class SignupMemberController {
     public Member signupMember(@RequestBody SignupMemberRequest request){
         SignupMemberCommand command = SignupMemberCommand.builder()
                 .email(request.getEmail())
-                .password(request.getPassword()).build();
+                .password(request.getPassword())
+                .consumerName(request.getConsumerName())
+                .consumerAddress(request.getConsumerAddress())
+                .consumerPhoneNum(request.getConsumerPhoneNum())
+                .build();
 
         return signupMemberInport.signupMember(command);
     }

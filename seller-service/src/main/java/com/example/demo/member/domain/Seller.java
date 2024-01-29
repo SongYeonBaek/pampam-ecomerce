@@ -15,5 +15,6 @@ public class Seller {
     private final String sellerAddr;
     private final String sellerPhoneNum;
     private final String sellerBusinessNumber;
+    private final String authority;
 
 }

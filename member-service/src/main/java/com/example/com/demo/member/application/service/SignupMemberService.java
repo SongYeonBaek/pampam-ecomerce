@@ -22,6 +22,9 @@ public class SignupMemberService implements SignupMemberInport {
         Member member = Member.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
+                .consumerAddress(command.getConsumerAddress())
+                .consumerName(command.getConsumerName())
+                .consumerPhoneNum(command.getConsumerPhoneNum())
                 .build();
 
         MemberJpaEntity memberJpaEntity = signupMemberOutport.signupMember(member);
@@ -29,7 +32,6 @@ public class SignupMemberService implements SignupMemberInport {
         return Member.builder()
                 .id(memberJpaEntity.getId())
                 .email(memberJpaEntity.getEmail())
-                .password(memberJpaEntity.getPassword())
                 .build();
     }
 }

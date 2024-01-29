@@ -12,5 +12,8 @@ import lombok.Setter;
 public class SignupMemberRequest {
     private String email;
     private String password;
+    private String consumerName;
+    private String consumerAddress;
+    private String consumerPhoneNum;
 //    private Boolean status;
 }

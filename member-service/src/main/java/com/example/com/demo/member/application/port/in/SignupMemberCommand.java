@@ -8,13 +8,10 @@ import lombok.NonNull;
 @Data
 public class SignupMemberCommand {
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
+    private String consumerName;
+    private String consumerAddress;
+    private String consumerPhoneNum;
 
-
-    public SignupMemberCommand(String email, String password ) {
-        this.email = email;
-        this.password = password;
-
-    }
 }
