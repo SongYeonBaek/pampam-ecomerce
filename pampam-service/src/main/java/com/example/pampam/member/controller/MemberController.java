@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MemberController {
     private final MemberService memberService;
     private final EmailVerifyService emailVerifyService;

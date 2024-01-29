@@ -21,5 +21,10 @@ public class MemberJpaEntity {
     private Long id;
     private String email;
     private String password;
+    private String consumerName;
+    private String consumerAddress;
+    private String consumerPhoneNum;
+    private String authority;
+
 //    private Boolean status;
 }
