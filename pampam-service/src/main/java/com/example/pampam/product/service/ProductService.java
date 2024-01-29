@@ -38,46 +38,27 @@ public class ProductService {
     public BaseResponse<PostProductRegisterRes> register(String token, PostProductRegisterReq productRegisterReq, MultipartFile[] images) {
 
         token = JwtUtils.replaceToken(token);
-
-        Claims sellerInfo = JwtUtils.getSellerInfO(token, secretKey);
+        Claims sellerInfo = JwtUtils.getSellerInfo(token, secretKey);
 
         if (sellerInfo.get("authority", String.class).equals("SELLER")) {
+            Product product = productRepository.save(Product.dtoToEntity(productRegisterReq, sellerInfo));
+            for (MultipartFile uploadFile : images) {
+                String uploadPath = imageSaveService.uploadFile(uploadFile);
+                imageSaveService.saveFile(product.getIdx(), uploadPath);
+            }
 
+            PostProductRegisterRes postProductRegisterRes = PostProductRegisterRes.entityToDto(product);
+            return BaseResponse.successResponse("요청 성공", postProductRegisterRes);
+
+        } else {
+            return BaseResponse.failResponse(7000, "요청 실패");
         }
-
-        Product product = productRepository.save(Product.builder()
-                .productName(productRegisterReq.getProductName())
-                .productInfo(productRegisterReq.getProductInfo())
-                .price(productRegisterReq.getPrice())
-                .salePrice(productRegisterReq.getSalePrice())
-                .startAt(productRegisterReq.getStartAt())
-                .closeAt(productRegisterReq.getCloseAt())
-                .people(productRegisterReq.getPeople())
-                .peopleCount(productRegisterReq.getPeopleCount())
-                .sellerIdx(sellerInfo.get("idx", Long.class))
-                .sellerEmail(sellerInfo.get("email", String.class))
-                .sellerName(sellerInfo.get("name", String.class))
-                .sellerPhoneNum(sellerInfo.get("phoneNum", String.class))
-                .sellerAddr(sellerInfo.get("address", String.class))
-                .build());
-
-        for (MultipartFile uploadFile : images) {
-            String uploadPath = imageSaveService.uploadFile(uploadFile);
-            imageSaveService.saveFile(product.getIdx(), uploadPath);
-        }
-
-
-        Long result = product.getIdx();
-        PostProductRegisterRes postProductResgisterRes = PostProductRegisterRes.builder()
-                .idx(result)
-                .build();
-
-        return BaseResponse.successResponse("요청 성공", postProductResgisterRes);
     }
 
     // TODO: 상품 전체 조회
-    public BaseResponse<Object> list(String email, Integer page, Integer size) {
-
+    public BaseResponse<Object> list(String token, Integer page, Integer size) {
+        token = JwtUtils.replaceToken(token);
+        String email = JwtUtils.getUsername(token, secretKey);
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         if (seller.isPresent()) {
@@ -102,25 +83,16 @@ public class ProductService {
             filenames = filenames.substring(0, filenames.length() - 1);
 
 
-            GetProductReadRes getProductReadRes = GetProductReadRes.builder()
-                    .idx(product.getIdx())
-                    .productName(product.getProductName())
-                    .price(product.getPrice())
-                    .salePrice(product.getSalePrice())
-                    .productInfo(product.getProductInfo())
-                    .filename(filenames)
-//                    .sellerIdx(product.getIdx())
-                    .peopleCount(product.getPeopleCount())
-                    .startAt(product.getStartAt())
-                    .closeAt(product.getCloseAt())
-                    .build();
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
             productReadResList.add(getProductReadRes);
         }
         // DtoToRes
         return BaseResponse.successResponse("요청 성공", productReadResList);
     }
 
-    public BaseResponse<GetProductReadRes> read(String email, Long idx) {
+    public BaseResponse<GetProductReadRes> read(String token, Long idx) {
+        token = JwtUtils.replaceToken(token);
+        String email = JwtUtils.getUsername(token, secretKey);
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         if(seller.isPresent()) {
@@ -141,20 +113,7 @@ public class ProductService {
                 filenames += filename + ",";
             }
             filenames = filenames.substring(0, filenames.length() - 1);
-
-
-            GetProductReadRes getProductReadRes = GetProductReadRes.builder()
-                    .idx(product.getIdx())
-                    .productName(product.getProductName())
-                    .price(product.getPrice())
-                    .salePrice(product.getSalePrice())
-                    .productInfo(product.getProductInfo())
-                    .filename(filenames)
-//                    .sellerIdx(product.getSellerIdx())
-                    .peopleCount(product.getPeopleCount())
-                    .startAt(product.getStartAt())
-                    .closeAt(product.getCloseAt())
-                    .build();
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
 
             return BaseResponse.successResponse("요청 성공", getProductReadRes);
         }
@@ -162,8 +121,9 @@ public class ProductService {
     }
 
     @Transactional
-    public BaseResponse<Long> update(String email, PatchProductUpdateReq patchProductUpdateReq){
-
+    public BaseResponse<Long> update(String token, PatchProductUpdateReq patchProductUpdateReq){
+        token = JwtUtils.replaceToken(token);
+        String email = JwtUtils.getUsername(token, secretKey);
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         if(seller.isPresent()) {
@@ -203,8 +163,9 @@ public class ProductService {
         }
     }
 
-    public BaseResponse<Long> delete(String email, Long idx) {
-
+    public BaseResponse<Long> delete(String token, Long idx) {
+        token = JwtUtils.replaceToken(token);
+        String email = JwtUtils.getUsername(token, secretKey);
         Optional<Seller> seller = sellerRepository.findByEmail(email);
 
         if(seller.isPresent()) {
@@ -214,8 +175,8 @@ public class ProductService {
 
         Optional<Product> product =  productRepository.findById(idx);
         if(product.isPresent()) {
-            Product product1 = product.get();
-            Long productIdx = product1.getIdx();
+            Product productInfo = product.get();
+            Long productIdx = productInfo.getIdx();
             productRepository.deleteById(productIdx);
 
             return BaseResponse.successResponse("상품 삭제 성공", productIdx);

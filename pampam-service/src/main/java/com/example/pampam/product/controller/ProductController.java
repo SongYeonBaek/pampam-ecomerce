@@ -38,8 +38,8 @@ public class ProductController {
             @ApiImplicitParam(name = "size", value = "조회 할 상품의 개수",
                     required = true, dataType = "Integer", paramType = "query", defaultValue = "")})
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<Object> list(@AuthenticationPrincipal String email, Integer page, Integer size) {
-        return ResponseEntity.ok().body(productService.list(email,page, size));
+    public ResponseEntity<Object> list(@RequestHeader(value = "Authorization") String token, Integer page, Integer size) {
+        return ResponseEntity.ok().body(productService.list(token,page, size));
     }
 
     @ApiOperation(value = "상품 조회")
@@ -48,8 +48,8 @@ public class ProductController {
             @ApiImplicitParam(name = "idx", value = "조회 할 상품 번호",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")})
     @GetMapping("/read/{idx}")
-    public ResponseEntity<Object> read(@AuthenticationPrincipal String email,@PathVariable Long idx) {
-        return ResponseEntity.ok().body(productService.read(email,idx));
+    public ResponseEntity<Object> read(@RequestHeader(value = "Authorization") String token, @PathVariable Long idx) {
+        return ResponseEntity.ok().body(productService.read(token,idx));
     }
 
     //RequestPart => 포스트맨에서 multipart/form-data가 포함되어 있는 경우에 사용/ Json 데이터의 입력을 위함
@@ -60,8 +60,8 @@ public class ProductController {
 
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity<Object> update(@AuthenticationPrincipal String email, @RequestPart PatchProductUpdateReq patchProductUpdateReq) {
-        return ResponseEntity.ok().body(productService.update(email,patchProductUpdateReq));
+    public ResponseEntity<Object> update(@RequestHeader(value = "Authorization") String token, @RequestPart PatchProductUpdateReq patchProductUpdateReq) {
+        return ResponseEntity.ok().body(productService.update(token,patchProductUpdateReq));
     }
 
     @ApiOperation(value = "상품 삭제")
@@ -71,7 +71,7 @@ public class ProductController {
             @ApiImplicitParam(name = "idx", value = "삭제할 상품 번호",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")})
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{idx}")
-    public ResponseEntity<Object> delete(@AuthenticationPrincipal String email,@PathVariable Long idx) {
-        return ResponseEntity.ok().body(productService.delete(email,idx));
+    public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization") String token, @PathVariable Long idx) {
+        return ResponseEntity.ok().body(productService.delete(token,idx));
     }
 }

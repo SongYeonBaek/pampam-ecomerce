@@ -4,7 +4,9 @@ import com.example.pampam.cart.model.entity.Cart;
 import com.example.pampam.category.model.entity.CategoryToProduct;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.orders.model.entity.OrderedProduct;
+import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.jsonwebtoken.Claims;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -75,4 +77,23 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
+
+
+    public static Product dtoToEntity(PostProductRegisterReq productRegisterReq, Claims sellerInfo) {
+        return Product.builder()
+                .productName(productRegisterReq.getProductName())
+                .productInfo(productRegisterReq.getProductInfo())
+                .price(productRegisterReq.getPrice())
+                .salePrice(productRegisterReq.getSalePrice())
+                .startAt(productRegisterReq.getStartAt())
+                .closeAt(productRegisterReq.getCloseAt())
+                .people(productRegisterReq.getPeople())
+                .peopleCount(productRegisterReq.getPeopleCount())
+                .sellerIdx(sellerInfo.get("idx", Long.class))
+                .sellerEmail(sellerInfo.get("email", String.class))
+                .sellerName(sellerInfo.get("name", String.class))
+                .sellerPhoneNum(sellerInfo.get("phoneNum", String.class))
+                .sellerAddr(sellerInfo.get("address", String.class))
+                .build();
+    }
 }

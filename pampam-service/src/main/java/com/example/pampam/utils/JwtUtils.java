@@ -7,12 +7,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JwtUtils {
 
@@ -70,7 +67,11 @@ public class JwtUtils {
         return extractAllClaims(token, key).get("idx", Long.class);
     }
 
-    public static Claims getSellerInfO(String token, String key) {
+    public static Claims getSellerInfo(String token, String key) {
+        return extractAllClaims(token, key);
+    }
+
+    public static Claims getConsumerInfo(String token, String key) {
         return extractAllClaims(token, key);
     }
 

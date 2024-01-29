@@ -24,7 +24,6 @@ public class JwtTokenProvider implements LoginMemberJwtOutport {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-
     @Override
     public String generateAccessToken(Member member) {
 

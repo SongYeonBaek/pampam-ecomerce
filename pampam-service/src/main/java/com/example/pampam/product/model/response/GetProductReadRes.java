@@ -16,8 +16,23 @@ public class GetProductReadRes {
     private Integer salePrice;
     private String productInfo;
     private String filename;
-    private Seller sellerIdx ;
+    private Long sellerIdx ;
     private Integer peopleCount;
     private Date startAt;
     private Date closeAt;
+
+    public static GetProductReadRes entityToDto(Product product, String filename) {
+        return GetProductReadRes.builder()
+                .idx(product.getIdx())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .salePrice(product.getSalePrice())
+                .productInfo(product.getProductInfo())
+                .filename(filename)
+                .sellerIdx(product.getSellerIdx())
+                .peopleCount(product.getPeopleCount())
+                .startAt(product.getStartAt())
+                .closeAt(product.getCloseAt())
+                .build();
+    }
 }
