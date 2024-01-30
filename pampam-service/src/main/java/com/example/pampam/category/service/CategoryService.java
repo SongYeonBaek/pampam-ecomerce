@@ -39,13 +39,7 @@ public class CategoryService {
                 throw new EcommerceApplicationException(ErrorCode.INTERNAL_SERVER_ERROR);
             }
 
-            searchList.add(GetSearchRes.builder()
-                    .productIdx(categoryToProduct.getProduct().getIdx())
-                    .productName(categoryToProduct.getProduct().getProductName())
-                    .price(categoryToProduct.getProduct().getPrice())
-                    .image(categoryToProduct.getProduct().getImages().get(0).getImagePath())
-//                    .sellerIdx(categoryToProduct.getProduct().getSellerIdx().getSellerIdx())
-                    .build());
+            searchList.add(GetSearchRes.entityToDto(categoryToProduct));
         }
 
         return BaseResponse.successResponse("카테고리 조회 성공", searchList);
@@ -55,20 +49,9 @@ public class CategoryService {
         Optional<Product> product = productRepository.findById(idx);
 
         if (product.isPresent()) {
-            Category category = categoryRepository.save(Category.builder()
-                    .region(Region.findRegion().get(categoryReq.getRegionId()))
-                    .type(ProductType.findType().get(categoryReq.getTypeId()))
-                    .build());
-
-            categoryToProductRepository.save(CategoryToProduct.builder()
-                    .category(category)
-                    .product(product.get())
-                    .build());
-
-            PostInsertRes postInsertRes = PostInsertRes.builder()
-                    .productName(product.get().getProductName())
-                    .region(category.getRegion())
-                    .build();
+            Category category = categoryRepository.save(Category.dtoToEntity(categoryReq));
+            categoryToProductRepository.save(CategoryToProduct.dtoToEntity(category, product.get()));
+            PostInsertRes postInsertRes = PostInsertRes.entityToDto(product.get(), category);
 
             return BaseResponse.successResponse("요청 성공", postInsertRes);
         } else {

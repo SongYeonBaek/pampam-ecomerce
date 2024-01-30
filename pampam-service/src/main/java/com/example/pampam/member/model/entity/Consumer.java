@@ -37,8 +37,6 @@ public class Consumer implements UserDetails {
     private Boolean socialLogin;
     private Boolean status;         // email 인증 여부
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
-    private List<Cart> carts;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
     private List<Orders> ordersList = new ArrayList<>();

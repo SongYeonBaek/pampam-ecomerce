@@ -1,5 +1,8 @@
 package com.example.pampam.category.model.entity;
 
+import com.example.pampam.category.model.request.PostInsertCategoryReq;
+import com.example.pampam.utils.ProductType;
+import com.example.pampam.utils.Region;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,4 +23,11 @@ public class Category {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "category")
     private List<CategoryToProduct> categoryList;
+
+    public static Category dtoToEntity(PostInsertCategoryReq categoryReq) {
+        return Category.builder()
+                .region(Region.findRegion().get(categoryReq.getRegionId()))
+                .type(ProductType.findType().get(categoryReq.getTypeId()))
+                .build();
+    }
 }

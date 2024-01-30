@@ -23,4 +23,12 @@ public class CategoryToProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_idx")
     private Product product;
+
+    public static CategoryToProduct dtoToEntity(Category category, Product product) {
+        return CategoryToProduct.builder()
+                .category(category)
+                .product(product)
+                .build();
+    }
+
 }

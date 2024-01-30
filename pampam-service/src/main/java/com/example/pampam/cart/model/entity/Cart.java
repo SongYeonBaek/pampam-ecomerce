@@ -19,13 +19,17 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    private Long consumerIdx;
+
     // 상품이랑 연관관계 맺기
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_idx")
     private Product product;
 
-    // 구매자랑 연관관계 맺기
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "consumer_idx")
-    private Consumer consumer;
+    public static Cart cartBuilder(Long productIdx, Long consumerIdx) {
+        return Cart.builder()
+                .product(Product.builder().idx(productIdx).build())
+                .consumerIdx(consumerIdx)
+                .build();
+    }
 }
