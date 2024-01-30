@@ -29,6 +29,7 @@ public class LoginMemberService implements LoginMemberInport {
 
         if (result != null) {
             Member memberInfo = Member.builder()
+                    .id(result.getId())
                     .email(result.getEmail())
                     .consumerName(result.getConsumerName())
                     .consumerPhoneNum(result.getConsumerPhoneNum())

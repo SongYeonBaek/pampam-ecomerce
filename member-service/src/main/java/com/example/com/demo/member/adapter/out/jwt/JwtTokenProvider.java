@@ -28,6 +28,7 @@ public class JwtTokenProvider implements LoginMemberJwtOutport {
     public String generateAccessToken(Member member) {
 
         Claims claims = Jwts.claims();
+        claims.put("idx", member.getId());
         claims.put("email", member.getEmail());
         claims.put("name", member.getConsumerName());
         claims.put("phoneNum", member.getConsumerPhoneNum());

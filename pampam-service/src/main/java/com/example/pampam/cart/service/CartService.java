@@ -7,17 +7,16 @@ import com.example.pampam.cart.repository.CartRepository;
 import com.example.pampam.common.BaseResponse;
 import com.example.pampam.exception.EcommerceApplicationException;
 import com.example.pampam.exception.ErrorCode;
-import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.repository.ConsumerRepository;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,42 +27,37 @@ public class CartService {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    public BaseResponse<PostCartInRes> cartIn(Long productIdx, String email) {
-        Optional<Consumer> consumer = consumerRepository.findByEmail(email);
+    public BaseResponse<PostCartInRes> cartIn(Long productIdx, String token) {
+        token = JwtUtils.replaceToken(token);
+        Claims consumerInfo = JwtUtils.getConsumerInfo(token, secretKey);
+        Long consumerIdx = consumerInfo.get("idx", Long.class);
+        String authority = consumerInfo.get("authority", String.class);
 
-        if (consumer.isPresent()) {
-            Cart cart = cartRepository.save(Cart.builder()
-                    .product(Product.builder().idx(productIdx).build())
-                    .consumer(consumer.get())
-                    .build());
+        if (authority.equals("CONSUMER")) {
+            if (consumerIdx != null) {
+                Cart cart = cartRepository.save(Cart.cartBuilder(productIdx, consumerIdx));
+                PostCartInRes product = PostCartInRes.entityToDto(cart);
 
-            PostCartInRes product = PostCartInRes.builder()
-                    .productId(cart.getProduct().getIdx())
-                    .productName(cart.getProduct().getProductName())
-                    .build();
-
-            return BaseResponse.successResponse("요청 성공", product);
+                return BaseResponse.successResponse("요청 성공", product);
+            } else {
+                throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
+            }
         } else {
-            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
+            return BaseResponse.failResponse(7000, "판매자는 접근이 불가합니다.");
         }
     }
 
-    public BaseResponse<List<GetCartListRes>> cartList(String email) {
+    public BaseResponse<List<GetCartListRes>> cartList(String token) {
+        token = JwtUtils.replaceToken(token);
+        Long consumerIdx = JwtUtils.getUserIdx(token, secretKey);
 
-        Optional<Consumer> consumer = consumerRepository.findByEmail(email);
-
-        if (consumer.isPresent()) {
-            List<Cart> carts = cartRepository.findAllByConsumer(Consumer.builder().consumerIdx(consumer.get().getConsumerIdx()).build());
+        if (consumerIdx != null) {
+            List<Cart> carts = cartRepository.findAllByConsumerIdx(consumerIdx);
             List<GetCartListRes> cartList = new ArrayList<>();
 
             for (Cart cart : carts) {
                 Product product = cart.getProduct();
-                cartList.add(GetCartListRes.builder()
-                        .idx(cart.getIdx())
-                        .productName(product.getProductName())
-                        .price(product.getPrice())
-                        .image(product.getImages().get(0).getImagePath())
-                        .build());
+                cartList.add(GetCartListRes.entityToDto(cart, product));
             }
             return BaseResponse.successResponse("요청 성공", cartList);
         } else {
@@ -72,17 +66,14 @@ public class CartService {
     }
 
     public BaseResponse<String> updateCart(String token, Long cartIdx) {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.split(" ")[1];
-        }
+        token = JwtUtils.replaceToken(token);
+        Long consumerIdx = JwtUtils.getUserIdx(token, secretKey);
 
-        Long idx = JwtUtils.getUserIdx(token, secretKey);
+        Claims consumerInfo = JwtUtils.getConsumerInfo(token, secretKey);
 
-        Optional<Consumer> consumer = consumerRepository.findById(idx);
-
-        if (consumer.isPresent()) {
+        if (consumerIdx != null) {
             cartRepository.deleteById(cartIdx);
-            return BaseResponse.successResponse("요청 성공", consumer.get().getEmail());
+            return BaseResponse.successResponse("요청 성공", consumerInfo.get("email", String.class));
         } else {
             throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
