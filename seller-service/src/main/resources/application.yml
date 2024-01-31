@@ -1,8 +1,6 @@
 server:
   port: 7073
 
-
-
 eureka:
   client:
     register-with-eureka: true
