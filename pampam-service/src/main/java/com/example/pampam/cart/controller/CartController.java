@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "장바구니 컨트롤러 v1", tags = "장바구니 API")
 @RequiredArgsConstructor
 @RequestMapping("/cart")
+@CrossOrigin("*")
 public class CartController {
 
     private final CartService cartService;

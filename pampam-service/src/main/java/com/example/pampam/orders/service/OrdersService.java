@@ -38,7 +38,6 @@ public class OrdersService {
     private final ConsumerRepository consumerRepository;
     private final ProductRepository productRepository;
 
-
     public BaseResponse<List<PostOrderInfoRes>> createOrder(String email, String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> iamportResponse = paymentService.getPaymentInfo(impUid);
         Integer amount = iamportResponse.getResponse().getAmount().intValue();
