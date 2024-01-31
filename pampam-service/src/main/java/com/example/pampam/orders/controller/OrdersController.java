@@ -10,6 +10,7 @@ import com.example.pampam.orders.service.PaymentService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,13 +32,13 @@ public class OrdersController {
             @ApiImplicitParam(name = "impUid", value = "주문 번호 입력",
                     required = true, paramType = "query", dataType = "string", defaultValue = "")})
     @RequestMapping(method = RequestMethod.POST,value = "/validation")
-    public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@AuthenticationPrincipal String email, String impUid){
+    public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@RequestHeader(value = "Authorization") String token, String impUid){
         try{
             //주문의 유효성 검사
             if(paymentService.paymentValidation(impUid)){
                 //orders과 orderedProduct에 저장
 
-                return ordersService.createOrder(email, impUid);
+                return ordersService.createOrder(token, impUid);
             }
             throw new EcommerceApplicationException(ErrorCode.NOT_MATCH_AMOUNT);
         } catch (Exception e){
@@ -45,13 +46,14 @@ public class OrdersController {
         }
     }
 
+
     //Consumer의 주문 내역을 확인
     @ApiOperation(value = "주문 내역 조회")
     @ApiImplicitParam(name = "email", value = "이메일을 받기 위한 토큰 입력",
             required = true, paramType = "query", dataType = "string", defaultValue = "")
     @RequestMapping(method = RequestMethod.GET,value = "/list")
-    public BaseResponse<List<OrdersListRes>>  orderList(@AuthenticationPrincipal String email) {
-        return ordersService.orderList(email);
+    public BaseResponse<List<OrdersListRes>>  orderList(@RequestHeader(value = "Authorization") String token) {
+        return ordersService.orderList(token);
     }
 
     //Consumer가 구매를 취소

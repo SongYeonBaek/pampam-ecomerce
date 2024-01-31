@@ -38,8 +38,8 @@ public class Consumer implements UserDetails {
     private Boolean status;         // email 인증 여부
 
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
-    private List<Orders> ordersList = new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer")
+//    private List<Orders> ordersList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,4 +76,6 @@ public class Consumer implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
