@@ -22,9 +22,13 @@
   </tbody>
 </table>
 
+### ✔️Project-Version
+* 현재 프로젝트 최종 버전 - pampam v2.0
+
+
 ### ✔️Back-end
 
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow"> <img src="https://img.shields.io/badge/Jpa-E34F26?style=for-the-badge&logo=Jpa&logoColor=white">
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow"> <img src="https://img.shields.io/badge/Jpa-E34F26?style=for-the-badge&logo=Jpa&logoColor=white"><br>
 
 ## ⭐ 프로젝트 설명
 <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/80888180/c7557c99-37ef-439b-aa09-25263e1f2f7c" width="400" height="360"><br>
@@ -78,7 +82,6 @@
 
 ## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/a345f688-56fd-436e-bf91-4f01562c0a6e" width="20" height="20"/> 기능 명세서
 <a href="http://pampam.n-e.kr:8080/swagger-ui/"> 기능 명세서 - Swagger-ui </a>
-
 
 
 ## 💡 테스트 및 결과
