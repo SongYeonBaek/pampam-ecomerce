@@ -8,10 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class JwtToken {
-    private final Long id;
     private final String accessToken;
 
-    public static JwtToken generateJwtToken(Long id, String accessToken) {
-        return new JwtToken(id, accessToken);
+    public static JwtToken generateJwtToken(String accessToken) {
+        return new JwtToken(accessToken);
     }
 }

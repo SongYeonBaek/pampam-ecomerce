@@ -5,8 +5,10 @@ import com.example.com.demo.member.application.port.in.LoginMemberCommand;
 import com.example.com.demo.member.application.port.in.LoginMemberInport;
 import com.example.com.demo.member.application.port.out.LoginMemberJwtOutport;
 import com.example.com.demo.member.application.port.out.LoginMemberOutport;
+import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.JwtToken;
 import com.example.com.demo.member.domain.Member;
+import com.example.com.demo.member.exception.ErrorCode;
 import com.example.demo.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +21,7 @@ public class LoginMemberService implements LoginMemberInport {
 
 
     @Override
-    public JwtToken login(LoginMemberCommand command) {
+    public BaseResponse<String> login(LoginMemberCommand command) {
         Member member = Member.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
@@ -36,10 +38,11 @@ public class LoginMemberService implements LoginMemberInport {
                     .consumerAddress(result.getConsumerAddress())
                     .authority(result.getAuthority())
                     .build();
+
             String accessToken = loginMemberJwtOutport.generateAccessToken(memberInfo);
-            return JwtToken.generateJwtToken(1L, accessToken);
+            return BaseResponse.successResponse("로그인이 정상적으로 처리되었습니다.", accessToken);
         } else {
-            return null;
+            return BaseResponse.failResponse(ErrorCode.INTERNAL_SERVER_ERROR.getCode(), "서버에서 문제가 발생하였습니다.");
         }
     }
 
