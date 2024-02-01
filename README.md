@@ -22,6 +22,9 @@
   </tbody>
 </table>
 
+### ✔️Project-Version
+* 현재 프로젝트 버전 - pampam v2.0
+
 ### ✔️Back-end
 
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow"> <img src="https://img.shields.io/badge/Kafka-231F20?style=for-the-badge&logo=Kafka&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=green"> <img src="https://img.shields.io/badge/CentOS-262577?style=for-the-badge&logo=CentOS&logoColor=blue"> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=green"><br><img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=skyblue"> <img src="https://img.shields.io/badge/Json Web Tokens-000000?style=for-the-badge&logo=Json Web Tokens&logoColor=purple"> <img src="https://img.shields.io/badge/Eureka-EE2950?style=for-the-badge&logo=Eureka&logoColor=purple"> <img src="https://img.shields.io/badge/OpenFeign-9013FE?style=for-the-badge&logo=OpenFeign&logoColor=orange"><br> 
