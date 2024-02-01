@@ -1,6 +1,6 @@
 package com.example.demo.member.exception;
 
-import com.example.com.demo.member.common.BaseResponse;
+import com.example.demo.member.common.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
