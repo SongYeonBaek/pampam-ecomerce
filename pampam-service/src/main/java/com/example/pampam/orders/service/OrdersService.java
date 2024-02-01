@@ -15,12 +15,15 @@ import com.example.pampam.orders.repository.OrderedProductRepository;
 import com.example.pampam.orders.repository.OrdersRepository;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.repository.ProductRepository;
+import com.example.pampam.utils.JwtUtils;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.google.gson.Gson;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,8 +41,10 @@ public class OrdersService {
     private final ConsumerRepository consumerRepository;
     private final ProductRepository productRepository;
 
+    @Value("${jwt.secret-key}")
+    private String secretKey;
 
-    public BaseResponse<List<PostOrderInfoRes>> createOrder(String email, String impUid) throws IamportResponseException, IOException {
+    public BaseResponse<List<PostOrderInfoRes>> createOrder(String token, String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> iamportResponse = paymentService.getPaymentInfo(impUid);
         Integer amount = iamportResponse.getResponse().getAmount().intValue();
         String customDataString = iamportResponse.getResponse().getCustomData();
@@ -49,47 +54,36 @@ public class OrdersService {
 
         List<PostOrderInfoRes> orderList = new ArrayList<>();
 
-        Optional<Consumer> result = consumerRepository.findByEmail(email);
+        Optional<Consumer> result = consumerRepository.findByEmail(token);
         if(result.isPresent()) {
-            Orders order = ordersRepository.save(Orders.builder()
-                    .impUid(impUid)
-                    .consumer(result.get())
-                    .price(amount)
-                    .orderDate(LocalDate.now())
-                    .build());
+            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, token, amount));
 
             //Custom Data 안에 있던 Product 리스트 하나씩 꺼내와서 OrderedProduct에 저장
             for (GetPortOneRes getPortOneRes : paymentProducts.getProducts()) {
-                orderedProductRepository.save(OrderedProduct.builder()
-                        .orders(order)
-                        .product(Product.builder().idx(getPortOneRes.getId()).build())
-                        .build());
-                orderList.add(PostOrderInfoRes.builder()
-                        .impUid(impUid)
-                        .productName(getPortOneRes.getName())
-                        .localDate(order.getOrderDate())
-                        .build());
+                orderedProductRepository.save(OrderedProduct.dtoToEntity(order, getPortOneRes));
+
+                orderList.add(PostOrderInfoRes.dtoToEntity(impUid, getPortOneRes, order));
             }
             return BaseResponse.successResponse("주문 완료", orderList);
         }
         throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
     }
 
-    public BaseResponse<List<OrdersListRes>> orderList(String email) {
+    public BaseResponse<List<OrdersListRes>> orderList(String token) {
+        token = JwtUtils.replaceToken(token);
+        Claims consumerInfo = JwtUtils.getConsumerInfo(token, secretKey);
+        String email = consumerInfo.get("email", String.class);
         List<OrdersListRes> result = new ArrayList<>();
-        Optional<Consumer> consumer = consumerRepository.findByEmail(email);
-        if(consumer.isPresent()){
-            List<Orders> ordersList = consumer.get().getOrdersList();
-            for(Orders orders : ordersList){
-                Product product = orders.getOrderProductsList().get(0).getProduct();
-                result.add(OrdersListRes.builder()
-                        .idx(orders.getIdx())
-                        .orderDate(orders.getOrderDate())
-                        .productName(product.getProductName())
-                        .build());
+        if (email != null) {
+            List<Orders> orders = ordersRepository.findAllByConsumerEmail(email);
+            for(Orders order :orders){
+                Product product = order.getOrderProductsList().get(0).getProduct();
+                result.add(OrdersListRes.dtoToEntity(order, product));
             }
+
+            return BaseResponse.successResponse("주문 내역 조회.", result);
         }
-        return BaseResponse.successResponse("주문 내역 조회.", result);
+        return null;
     }
 
     public BaseResponse<String> groupCancel(Long productId) throws IOException {

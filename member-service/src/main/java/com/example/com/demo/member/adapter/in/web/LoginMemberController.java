@@ -5,15 +5,13 @@ import com.example.com.demo.member.application.port.in.LoginMemberInport;
 import com.example.com.demo.member.domain.JwtToken;
 import com.example.demo.common.WebAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @WebAdapter
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("member")
+@CrossOrigin("*")
 public class LoginMemberController {
 
     private final LoginMemberInport memberInport;

@@ -184,7 +184,7 @@ public class ProductService {
             throw new EcommerceApplicationException(
                     ErrorCode.PRODUCT_NOT_FOUND,
                     String.format("%s를 찾을 수 없습니다.", product.get().getProductName()),
-                            ErrorCode.PRODUCT_NOT_FOUND.getCode());
+                    ErrorCode.PRODUCT_NOT_FOUND.getCode());
         }
     }
 }
