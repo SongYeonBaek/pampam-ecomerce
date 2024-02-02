@@ -27,6 +27,7 @@ public class GetCartListRes {
     public static GetCartListRes entityToDto(Cart cart, Product product) {
         return GetCartListRes.builder()
                 .idx(cart.getIdx())
+                .productIdx(product.getIdx())
                 .productName(product.getProductName())
                 .price(product.getPrice())
                 .image(product.getImages().get(0).getImagePath())

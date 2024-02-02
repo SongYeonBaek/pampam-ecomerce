@@ -35,7 +35,7 @@ public class MemberController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/consumer/login")
+        @RequestMapping(method = RequestMethod.POST, value = "/consumer/login")
     public ResponseEntity memberLogin(@RequestBody ConsumerLoginReq consumerLoginReq){
 
 

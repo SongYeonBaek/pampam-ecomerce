@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "장바구니 컨트롤러 v1", tags = "장바구니 API")
 @RequiredArgsConstructor
 @RequestMapping("/cart")
+@CrossOrigin("*")
 public class CartController {
 
     private final CartService cartService;
@@ -24,7 +25,7 @@ public class CartController {
             @ApiImplicitParam(name = "productIdx", value = "장바구니에 넣을 상품 번호 입력",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/in/{productIdx}")
+    @RequestMapping(method = RequestMethod.GET, value = "/in/{productIdx}")
     public ResponseEntity<Object> cartIn(@RequestHeader(value = "Authorization") String token, @PathVariable Long productIdx) {
         return ResponseEntity.ok().body(cartService.cartIn(productIdx, token));
     }
