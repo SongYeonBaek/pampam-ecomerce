@@ -1,7 +1,6 @@
 package com.example.pampam.product.model.entity;
 
 import com.example.pampam.cart.model.entity.Cart;
-import com.example.pampam.category.model.entity.CategoryToProduct;
 import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.orders.model.entity.OrderedProduct;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
@@ -29,6 +28,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+
+    @Column(nullable = false)
+    private ProductType productType;
 
     @Column(nullable = false)
     @Size(max = 100)
@@ -70,17 +72,14 @@ public class Product {
     private List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
-    private List<CategoryToProduct> categoryList;
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
     private List<Cart> carts;
 
     @OneToMany(mappedBy = "product")
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
 
-
     public static Product dtoToEntity(PostProductRegisterReq productRegisterReq, Claims sellerInfo) {
         return Product.builder()
+                .productType(productRegisterReq.getProductType())
                 .productName(productRegisterReq.getProductName())
                 .productInfo(productRegisterReq.getProductInfo())
                 .price(productRegisterReq.getPrice())

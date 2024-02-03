@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(value = "상품 컨트롤러 v1", tags = "상품 API")
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
     @ApiOperation(value = "상품 등록")

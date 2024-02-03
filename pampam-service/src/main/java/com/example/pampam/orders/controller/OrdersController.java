@@ -10,10 +10,8 @@ import com.example.pampam.orders.service.PaymentService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +19,7 @@ import java.util.List;
 @Api(value = "주문/결제 컨트롤러 v1", tags = "주문/결제 API")
 @RequiredArgsConstructor
 @RequestMapping("/order")
+@CrossOrigin("*")
 public class OrdersController {
     private final OrdersService ordersService;
     private final PaymentService paymentService;
