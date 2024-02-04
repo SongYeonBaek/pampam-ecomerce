@@ -1,5 +1,7 @@
 package com.example.pampam.orders.service;
 
+import com.example.pampam.cart.model.entity.Cart;
+import com.example.pampam.cart.repository.CartRepository;
 import com.example.pampam.common.BaseResponse;
 import com.example.pampam.exception.EcommerceApplicationException;
 import com.example.pampam.exception.ErrorCode;
@@ -40,6 +42,7 @@ public class OrdersService {
     private final PaymentService paymentService;
     private final ConsumerRepository consumerRepository;
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -54,16 +57,24 @@ public class OrdersService {
 
         List<PostOrderInfoRes> orderList = new ArrayList<>();
 
-        Optional<Consumer> result = consumerRepository.findByEmail(token);
+        token = JwtUtils.replaceToken(token);
+        Long consumerIdx = JwtUtils.getUserIdx(token, secretKey);
+
+        //카트에서 삭제
+        cartRepository.deleteAllByConsumerIdx(consumerIdx);
+
+        Optional<Consumer> result = consumerRepository.findById(consumerIdx);
         if(result.isPresent()) {
-            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, token, amount));
+            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, consumerIdx, amount));
 
             //Custom Data 안에 있던 Product 리스트 하나씩 꺼내와서 OrderedProduct에 저장
             for (GetPortOneRes getPortOneRes : paymentProducts.getProducts()) {
                 orderedProductRepository.save(OrderedProduct.dtoToEntity(order, getPortOneRes));
+                List<Cart> cartList =  cartRepository.findAllByConsumerIdx(consumerIdx);
 
                 orderList.add(PostOrderInfoRes.dtoToEntity(impUid, getPortOneRes, order));
             }
+
             return BaseResponse.successResponse("주문 완료", orderList);
         }
         throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
@@ -74,6 +85,7 @@ public class OrdersService {
         Claims consumerInfo = JwtUtils.getConsumerInfo(token, secretKey);
         String email = consumerInfo.get("email", String.class);
         List<OrdersListRes> result = new ArrayList<>();
+
         if (email != null) {
             List<Orders> orders = ordersRepository.findAllByConsumerEmail(email);
             for(Orders order :orders){

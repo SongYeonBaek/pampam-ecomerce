@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class OrdersController {
             @ApiImplicitParam(name = "impUid", value = "주문 번호 입력",
                     required = true, paramType = "query", dataType = "string", defaultValue = "")})
     @RequestMapping(method = RequestMethod.GET,value = "/validation")
+    @Transactional
     public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@RequestHeader(value = "Authorization") String token, String impUid){
         try{
             //주문의 유효성 검사
