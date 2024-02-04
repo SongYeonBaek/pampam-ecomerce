@@ -26,7 +26,7 @@ public class ProductController {
             @ApiImplicitParam(name = "productRegisterReq", paramType = "query", value = "등록할 상품 정보", required = true)
     })
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart MultipartFile[] images) {
+    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart(required = false) MultipartFile[] images) {
         return ResponseEntity.ok().body(productService.register(token, productRegisterReq, images));
     }
 
@@ -39,8 +39,8 @@ public class ProductController {
             @ApiImplicitParam(name = "size", value = "조회 할 상품의 개수",
                     required = true, dataType = "Integer", paramType = "query", defaultValue = "")})
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<Object> list(@RequestHeader(value = "Authorization") String token, Integer page, Integer size) {
-        return ResponseEntity.ok().body(productService.list(token,page, size));
+    public ResponseEntity<Object> list(Integer page, Integer size) {
+        return ResponseEntity.ok().body(productService.list(page, size));
     }
 
     @ApiOperation(value = "상품 조회")

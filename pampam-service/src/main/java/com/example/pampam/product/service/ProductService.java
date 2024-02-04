@@ -56,16 +56,7 @@ public class ProductService {
     }
 
     // TODO: 상품 전체 조회
-    public BaseResponse<Object> list(String token, Integer page, Integer size) {
-        token = JwtUtils.replaceToken(token);
-        String email = JwtUtils.getUsername(token, secretKey);
-        Optional<Seller> seller = sellerRepository.findByEmail(email);
-
-        if (seller.isPresent()) {
-            System.out.println("인증된 접근입니다.");
-        } else throw new EcommerceApplicationException(
-                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
-
+    public BaseResponse<Object> list(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page-1,size);
         Page<Product> result = productRepository.findList(pageable);
 

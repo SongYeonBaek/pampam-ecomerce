@@ -19,7 +19,7 @@ public class SignupSellerController {
     private final SignupSellerInport signupSellerInport;
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public BaseResponse<Object> signupSeller(@RequestPart SignupSellerRequest request, @RequestPart MultipartFile file){
+    public BaseResponse<Object> signupSeller(@RequestPart SignupSellerRequest request, @RequestPart(required = false) MultipartFile file){
         return signupSellerInport.signupSeller(SignupSellerCommand.buildCommand(request, file));
     }
 }
