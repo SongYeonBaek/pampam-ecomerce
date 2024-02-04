@@ -1,8 +1,8 @@
 package com.example.demo.member.application.port.in;
 
 
-import com.example.demo.member.domain.JwtToken;
+import com.example.demo.member.common.BaseResponse;
 
 public interface LoginSellerInport {
-    JwtToken login(LoginSellerCommand command);
+    BaseResponse<Object> login(LoginSellerCommand command);
 }

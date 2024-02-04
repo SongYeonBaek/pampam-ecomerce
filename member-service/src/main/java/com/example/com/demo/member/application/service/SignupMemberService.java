@@ -5,7 +5,9 @@ import com.example.com.demo.member.application.port.in.SignupMemberCommand;
 import com.example.com.demo.member.application.port.in.SignupMemberInport;
 import com.example.com.demo.member.application.port.out.SignupMemberEventPort;
 import com.example.com.demo.member.application.port.out.SignupMemberOutport;
+import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.Member;
+import com.example.com.demo.member.exception.ErrorCode;
 import com.example.demo.common.UseCase;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +20,7 @@ public class SignupMemberService implements SignupMemberInport {
     private final SignupMemberEventPort signupMemberEventPort;
 
     @Override
-    public Member signupMember(SignupMemberCommand command) {
+    public BaseResponse<Member> signupMember(SignupMemberCommand command) {
         Member member = Member.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
@@ -28,10 +30,19 @@ public class SignupMemberService implements SignupMemberInport {
                 .build();
 
         MemberJpaEntity memberJpaEntity = signupMemberOutport.signupMember(member);
-        signupMemberEventPort.signupMemberEvent(member);
-        return Member.builder()
-                .id(memberJpaEntity.getId())
-                .email(memberJpaEntity.getEmail())
-                .build();
+
+        if (memberJpaEntity != null) {
+            signupMemberEventPort.signupMemberEvent(member);
+
+            Member result = Member.builder()
+                    .id(memberJpaEntity.getId())
+                    .email(memberJpaEntity.getEmail())
+                    .build();
+
+            return BaseResponse.successResponse("회원가입이 정상적으로 처리되었습니다.", result);
+
+        } else {
+            return BaseResponse.failResponse(ErrorCode.INTERNAL_SERVER_ERROR.getCode(), "서버에서 문제가 발생하였습니다.");
+        }
     }
 }

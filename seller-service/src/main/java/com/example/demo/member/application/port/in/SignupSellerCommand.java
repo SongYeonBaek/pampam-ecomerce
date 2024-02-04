@@ -1,5 +1,6 @@
 package com.example.demo.member.application.port.in;
 
+import com.example.demo.member.adapter.in.web.SignupSellerRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,5 +16,17 @@ public class SignupSellerCommand {
     private String sellerPhoneNum;
     private String sellerBusinessNumber;
     private MultipartFile file;
+
+    public static SignupSellerCommand buildCommand(SignupSellerRequest request, MultipartFile file) {
+        return SignupSellerCommand.builder()
+                .email(request.getEmail())
+                .sellerPW(request.getSellerPW())
+                .sellerName(request.getSellerName())
+                .sellerAddr(request.getSellerAddr())
+                .sellerPhoneNum(request.getSellerPhoneNum())
+                .sellerBusinessNumber(request.getSellerBusinessNumber())
+                .file(file)
+                .build();
+    }
 
 }

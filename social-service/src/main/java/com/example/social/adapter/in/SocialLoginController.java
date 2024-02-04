@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/social")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 public class SocialLoginController {
 
     private final SocialSignUpInport socialSignUpInport;

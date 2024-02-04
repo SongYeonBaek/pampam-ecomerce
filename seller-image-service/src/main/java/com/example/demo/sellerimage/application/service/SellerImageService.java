@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class SellerImageService implements SellerImageInport {
     private final SellerImageOutport sellerImageOutport;
     private final SellerImageUploadPort sellerImageUploadPort;
+
     @Override
     public SellerImage registerSellerImage(SellerImageCommand command) {
         String imagePath = sellerImageUploadPort.uploadSellerImage(command.getFile());
