@@ -22,13 +22,17 @@ public class GetCartListRes {
     @NotNull
     private Integer price;
     @NotNull
+    private Integer salePrice;
+    @NotNull
     private String image;
 
     public static GetCartListRes entityToDto(Cart cart, Product product) {
         return GetCartListRes.builder()
                 .idx(cart.getIdx())
+                .productIdx(product.getIdx())
                 .productName(product.getProductName())
                 .price(product.getPrice())
+                .salePrice(product.getSalePrice())
                 .image(product.getImages().get(0).getImagePath())
                 .build();
     }

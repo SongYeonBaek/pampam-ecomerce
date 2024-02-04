@@ -49,8 +49,8 @@ public class ProductController {
             @ApiImplicitParam(name = "idx", value = "조회 할 상품 번호",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")})
     @GetMapping("/read/{idx}")
-    public ResponseEntity<Object> read(@RequestHeader(value = "Authorization") String token, @PathVariable Long idx) {
-        return ResponseEntity.ok().body(productService.read(token,idx));
+    public ResponseEntity<Object> read(@PathVariable Long idx) {
+        return ResponseEntity.ok().body(productService.read(idx));
     }
 
     //RequestPart => 포스트맨에서 multipart/form-data가 포함되어 있는 경우에 사용/ Json 데이터의 입력을 위함
