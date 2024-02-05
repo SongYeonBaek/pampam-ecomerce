@@ -1,16 +1,17 @@
 package com.example.demo.member.adapter.in.web;
 
-import com.example.demo.common.WebAdapter;
+
 import com.example.demo.member.application.port.in.LoginSellerCommand;
 import com.example.demo.member.application.port.in.LoginSellerInport;
 import com.example.demo.member.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-@WebAdapter
+@Component
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("member")
+@RequestMapping("/seller")
 @CrossOrigin("*")
 public class LoginSellerController {
 

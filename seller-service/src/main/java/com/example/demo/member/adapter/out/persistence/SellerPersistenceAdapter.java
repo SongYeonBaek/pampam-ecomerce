@@ -1,17 +1,17 @@
 package com.example.demo.member.adapter.out.persistence;
 
 
-import com.example.demo.common.PersistenceAdapter;
 import com.example.demo.member.application.port.out.LoginSellerOutport;
 import com.example.demo.member.application.port.out.SignupSellerOutport;
 import com.example.demo.member.domain.Seller;
 import com.example.demo.member.exception.EcommerceApplicationException;
 import com.example.demo.member.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@PersistenceAdapter
+@Component
 @RequiredArgsConstructor
 public class SellerPersistenceAdapter implements SignupSellerOutport, LoginSellerOutport {
     private final SpringDataSellerRepository sellerRepository;

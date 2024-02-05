@@ -6,14 +6,15 @@ import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.Member;
 import com.example.com.demo.member.exception.EcommerceApplicationException;
 import com.example.com.demo.member.exception.ErrorCode;
-import com.example.demo.common.PersistenceAdapter;
+
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.asn1.cms.OtherRecipientInfo;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@PersistenceAdapter
+
 @RequiredArgsConstructor
+@Component
 public class MemberPersistenceAdapter implements SignupMemberOutport, LoginMemberOutport {
     private final SpringDataMemberRepository memberRepository;
 

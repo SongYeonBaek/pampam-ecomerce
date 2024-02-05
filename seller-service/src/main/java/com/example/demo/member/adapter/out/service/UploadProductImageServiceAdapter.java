@@ -1,12 +1,11 @@
 package com.example.demo.member.adapter.out.service;
 
-import com.example.demo.common.WebAdapter;
 import com.example.demo.member.application.port.out.UploadSellerImagePort;
 import com.example.demo.member.domain.SellerImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
-@WebAdapter
+
 @RestController
 @RequiredArgsConstructor
 public class UploadProductImageServiceAdapter implements UploadSellerImagePort {

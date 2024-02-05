@@ -1,11 +1,10 @@
 package com.example.demo.member.application.service;
 
 
-import com.example.demo.common.UseCase;
 import com.example.demo.member.adapter.out.persistence.SellerJpaEntity;
 import com.example.demo.member.application.port.in.SignupSellerCommand;
 import com.example.demo.member.application.port.in.SignupSellerInport;
-import com.example.demo.member.application.port.out.SignupSellerEventPort;
+//import com.example.demo.member.application.port.out.SignupSellerEventPort;
 import com.example.demo.member.application.port.out.SignupSellerOutport;
 import com.example.demo.member.application.port.out.UploadSellerImagePort;
 import com.example.demo.member.common.BaseResponse;
@@ -13,12 +12,13 @@ import com.example.demo.member.domain.Seller;
 import com.example.demo.member.domain.SellerImage;
 import com.example.demo.member.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UseCase
+@Component
 @RequiredArgsConstructor
 public class SignupSellerService implements SignupSellerInport {
     private final SignupSellerOutport signupSellerOutport;
-    private final SignupSellerEventPort signupSellerEventPort;
+//    private final SignupSellerEventPort signupSellerEventPort;
     private final UploadSellerImagePort uploadSellerImagePort;
     @Override
     public BaseResponse<Object> signupSeller(SignupSellerCommand command) {
@@ -34,10 +34,10 @@ public class SignupSellerService implements SignupSellerInport {
         SellerJpaEntity seller = signupSellerOutport.signupSeller(sellerInfo);
 
         if (seller != null) {
-            signupSellerEventPort.signupSellerEvent(Seller.builder()
-                    .id(seller.getId())
-                    .email(seller.getEmail())
-                    .build());
+//            signupSellerEventPort.signupSellerEvent(Seller.builder()
+//                    .id(seller.getId())
+//                    .email(seller.getEmail())
+//                    .build());
 
             uploadSellerImagePort.uploadSellerImagePort(SellerImage.builder()
                     .email(seller.getEmail())

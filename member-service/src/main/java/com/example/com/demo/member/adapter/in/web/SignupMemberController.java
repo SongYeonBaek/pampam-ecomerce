@@ -4,15 +4,17 @@ import com.example.com.demo.member.application.port.in.SignupMemberCommand;
 import com.example.com.demo.member.application.port.in.SignupMemberInport;
 import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.Member;
-import com.example.demo.common.WebAdapter;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-@WebAdapter
+
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 @CrossOrigin("*")
+@Component
 public class SignupMemberController {
     private final SignupMemberInport signupMemberInport;
 

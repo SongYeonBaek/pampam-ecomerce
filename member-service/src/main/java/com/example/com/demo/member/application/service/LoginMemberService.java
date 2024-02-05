@@ -9,10 +9,12 @@ import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.JwtToken;
 import com.example.com.demo.member.domain.Member;
 import com.example.com.demo.member.exception.ErrorCode;
-import com.example.demo.common.UseCase;
-import lombok.RequiredArgsConstructor;
 
-@UseCase
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+
+@Component
 @RequiredArgsConstructor
 public class LoginMemberService implements LoginMemberInport {
 

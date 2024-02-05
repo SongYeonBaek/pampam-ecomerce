@@ -3,13 +3,15 @@ package com.example.com.demo.member.adapter.out.kafka;
 
 import com.example.com.demo.member.application.port.out.SignupMemberEventPort;
 import com.example.com.demo.member.domain.Member;
-import com.example.demo.common.ExternalSystemAdapter;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
-@ExternalSystemAdapter
+
 @RequiredArgsConstructor
+@Component
 public class CreateEmailCertProducer implements SignupMemberEventPort {
 
     private final KafkaTemplate kafkaTemplate;

@@ -1,6 +1,5 @@
 package com.example.demo.member.application.service;
 
-import com.example.demo.common.UseCase;
 import com.example.demo.member.adapter.out.persistence.SellerJpaEntity;
 import com.example.demo.member.application.port.in.LoginSellerCommand;
 import com.example.demo.member.application.port.in.LoginSellerInport;
@@ -10,8 +9,9 @@ import com.example.demo.member.common.BaseResponse;
 import com.example.demo.member.domain.Seller;
 import com.example.demo.member.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UseCase
+@Component
 @RequiredArgsConstructor
 public class LoginSellerService implements LoginSellerInport {
 

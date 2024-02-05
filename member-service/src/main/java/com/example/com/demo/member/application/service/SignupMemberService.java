@@ -8,12 +8,14 @@ import com.example.com.demo.member.application.port.out.SignupMemberOutport;
 import com.example.com.demo.member.common.BaseResponse;
 import com.example.com.demo.member.domain.Member;
 import com.example.com.demo.member.exception.ErrorCode;
-import com.example.demo.common.UseCase;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UseCase
+
+@Component
 @RequiredArgsConstructor
 public class SignupMemberService implements SignupMemberInport {
     private final SignupMemberOutport signupMemberOutport;

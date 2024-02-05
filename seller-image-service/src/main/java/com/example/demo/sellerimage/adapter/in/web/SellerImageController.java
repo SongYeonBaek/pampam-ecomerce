@@ -1,14 +1,14 @@
 package com.example.demo.sellerimage.adapter.in.web;
 
-import com.example.demo.common.WebAdapter;
 import com.example.demo.sellerimage.application.port.in.SellerImageCommand;
 import com.example.demo.sellerimage.application.port.in.SellerImageInport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@WebAdapter
+@Component
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
