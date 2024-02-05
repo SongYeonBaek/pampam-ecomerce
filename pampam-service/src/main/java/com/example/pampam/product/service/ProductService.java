@@ -7,6 +7,7 @@ import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.repository.SellerRepository;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.model.entity.ProductImage;
+import com.example.pampam.utils.ProductType;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.model.response.GetProductReadRes;
@@ -41,7 +42,8 @@ public class ProductService {
         Claims sellerInfo = JwtUtils.getSellerInfo(token, secretKey);
 
         if (sellerInfo.get("authority", String.class).equals("SELLER")) {
-            Product product = productRepository.save(Product.dtoToEntity(productRegisterReq, sellerInfo));
+            String type = ProductType.findType().get(productRegisterReq.getProductType());
+            Product product = productRepository.save(Product.dtoToEntity(productRegisterReq, type, sellerInfo));
             for (MultipartFile uploadFile : images) {
                 String uploadPath = imageSaveService.uploadFile(uploadFile);
                 imageSaveService.saveFile(product.getIdx(), uploadPath);

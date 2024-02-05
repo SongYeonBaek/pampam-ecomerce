@@ -32,7 +32,6 @@ public class OrdersController {
             @ApiImplicitParam(name = "impUid", value = "주문 번호 입력",
                     required = true, paramType = "query", dataType = "string", defaultValue = "")})
     @RequestMapping(method = RequestMethod.GET,value = "/validation")
-    @Transactional
     public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@RequestHeader(value = "Authorization") String token, String impUid){
         try{
             //주문의 유효성 검사

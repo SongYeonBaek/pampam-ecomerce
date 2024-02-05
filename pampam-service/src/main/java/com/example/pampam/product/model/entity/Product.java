@@ -30,7 +30,7 @@ public class Product {
     private Long idx;
 
     @Column(nullable = false)
-    private ProductType productType;
+    private String productType;
 
     @Column(nullable = false)
     @Size(max = 100)
@@ -77,9 +77,9 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
 
-    public static Product dtoToEntity(PostProductRegisterReq productRegisterReq, Claims sellerInfo) {
+    public static Product dtoToEntity(PostProductRegisterReq productRegisterReq, String type, Claims sellerInfo) {
         return Product.builder()
-                .productType(productRegisterReq.getProductType())
+                .productType(type)
                 .productName(productRegisterReq.getProductName())
                 .productInfo(productRegisterReq.getProductInfo())
                 .price(productRegisterReq.getPrice())
@@ -87,7 +87,7 @@ public class Product {
                 .startAt(productRegisterReq.getStartAt())
                 .closeAt(productRegisterReq.getCloseAt())
                 .people(productRegisterReq.getPeople())
-                .peopleCount(productRegisterReq.getPeopleCount())
+                .peopleCount(1)
                 .sellerIdx(sellerInfo.get("idx", Long.class))
                 .sellerEmail(sellerInfo.get("email", String.class))
                 .sellerName(sellerInfo.get("name", String.class))
