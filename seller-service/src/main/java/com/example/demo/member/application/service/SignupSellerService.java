@@ -50,7 +50,7 @@ public class SignupSellerService implements SignupSellerInport {
 
             return BaseResponse.successResponse("회원가입이 정상적으로 처리되었습니다.", result);
         } else {
-            return BaseResponse.failResponse(ErrorCode.USER_NOT_FOUND.getCode(), "존재하지 않는 회원입니다.");
+            return BaseResponse.failResponse(ErrorCode.DUPLICATE_USER.getCode(), ErrorCode.DUPLICATE_USER.getMessage());
         }
     }
 }

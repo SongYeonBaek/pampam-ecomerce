@@ -11,12 +11,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PostOrderInfoRes {
+    private Long idx;
     private String impUid;
     private String productName;
     private LocalDate localDate;
 
-    public static PostOrderInfoRes dtoToEntity(String impUid, GetPortOneRes getPortOneRes, Orders orders) {
+    public static PostOrderInfoRes dtoToEntity(Long idx, String impUid, GetPortOneRes getPortOneRes, Orders orders) {
         return PostOrderInfoRes.builder()
+                .idx(idx)
                 .impUid(impUid)
                 .productName(getPortOneRes.getName())
                 .localDate(orders.getOrderDate())

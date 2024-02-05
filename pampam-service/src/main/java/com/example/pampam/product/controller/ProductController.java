@@ -26,7 +26,7 @@ public class ProductController {
             @ApiImplicitParam(name = "productRegisterReq", paramType = "query", value = "등록할 상품 정보", required = true)
     })
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart MultipartFile[] images) {
+    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart(required = false) MultipartFile[] images) {
         return ResponseEntity.ok().body(productService.register(token, productRegisterReq, images));
     }
 

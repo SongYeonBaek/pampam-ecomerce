@@ -26,6 +26,7 @@ import com.siot.IamportRestClient.response.Payment;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,7 +41,6 @@ public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final OrderedProductRepository orderedProductRepository;
     private final PaymentService paymentService;
-    private final ConsumerRepository consumerRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
@@ -59,25 +59,24 @@ public class OrdersService {
 
         token = JwtUtils.replaceToken(token);
         Long consumerIdx = JwtUtils.getUserIdx(token, secretKey);
+        String userEmail = JwtUtils.getUsername(token, secretKey);
 
-        //카트에서 삭제
-        cartRepository.deleteAllByConsumerIdx(consumerIdx);
+        if (consumerIdx != null) {
+            //카트에서 삭제
+            cartRepository.deleteAllByConsumerIdx(consumerIdx);
 
-        Optional<Consumer> result = consumerRepository.findById(consumerIdx);
-        if(result.isPresent()) {
-            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, consumerIdx, amount));
+            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, userEmail, consumerIdx, amount));
 
             //Custom Data 안에 있던 Product 리스트 하나씩 꺼내와서 OrderedProduct에 저장
             for (GetPortOneRes getPortOneRes : paymentProducts.getProducts()) {
                 orderedProductRepository.save(OrderedProduct.dtoToEntity(order, getPortOneRes));
-                List<Cart> cartList =  cartRepository.findAllByConsumerIdx(consumerIdx);
-
-                orderList.add(PostOrderInfoRes.dtoToEntity(impUid, getPortOneRes, order));
+                orderList.add(PostOrderInfoRes.dtoToEntity(order.getIdx(), impUid, getPortOneRes, order));
             }
 
             return BaseResponse.successResponse("주문 완료", orderList);
+        } else {
+            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
-        throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
     }
 
     public BaseResponse<List<OrdersListRes>> orderList(String token) {

@@ -61,22 +61,18 @@ public class ProductService {
     public BaseResponse<Object> list(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page-1,size);
         Page<Product> result = productRepository.findList(pageable);
-
+        List<String> file = new ArrayList<>();
         List<GetProductReadRes> productReadResList = new ArrayList<>();
 
         for (Product product : result.getContent()) {
 
             List<ProductImage> productImages = product.getImages();
 
-            String filenames = "";
             for (ProductImage productImage : productImages) {
-                String filename = productImage.getImagePath();
-                filenames += filename + ",";
+                file.add(productImage.getImagePath());
             }
-            filenames = filenames.substring(0, filenames.length() - 1);
 
-
-            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, file);
             productReadResList.add(getProductReadRes);
         }
         // DtoToRes
@@ -89,16 +85,14 @@ public class ProductService {
 
         if (result.isPresent()) {
             Product product = result.get();
-
+            List<String> file = new ArrayList<>();
             List<ProductImage> productImages = product.getImages();
 
-            String filenames = "";
             for (ProductImage productImage : productImages) {
-                String filename = productImage.getImagePath();
-                filenames += filename + ",";
+                file.add(productImage.getImagePath());
             }
-            filenames = filenames.substring(0, filenames.length() - 1);
-            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
+
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, file);
 
             return BaseResponse.successResponse("요청 성공", getProductReadRes);
         }
