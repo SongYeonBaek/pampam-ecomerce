@@ -81,8 +81,7 @@
 <a href="http://pampam.n-e.kr:8080/swagger-ui/"> 기능 명세서 - Swagger-ui </a>
 
 
-## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/a345f688-56fd-436e-bf91-4f01562c0a6e" width="20" height="20"/> Figma
-<a href="https://www.figma.com/file/iMOfyeYb7iORfHvnz3X2ET/pampam?type=design&node-id=0-1&mode=design&t=7kS13w2HbMWIC0BN-0"> 피그마 - Figma </a>
+
 
 
 ## 💡 테스트 및 결과
