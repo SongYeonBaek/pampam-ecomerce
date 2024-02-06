@@ -78,7 +78,7 @@
 
 
 ## <img src="https://github.com/beyond-sw-camp/be02-2nd-pampam-ecomerce/assets/149215818/a345f688-56fd-436e-bf91-4f01562c0a6e" width="20" height="20"/> 기능 명세서
-<a href="http://pampam.n-e.kr:8080/swagger-ui/"> 기능 명세서 - Swagger-ui </a>
+<a href="http://www.pampam.n-e.kr:8080/swagger-ui/"> 기능 명세서 - Swagger-ui </a>
 
 
 
