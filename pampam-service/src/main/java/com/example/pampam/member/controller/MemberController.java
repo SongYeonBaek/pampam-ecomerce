@@ -22,29 +22,21 @@ public class MemberController {
     private final KakaoService kakaoService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/signup")
-    public ResponseEntity consumerSignup(@RequestBody ConsumerSignupReq memberSignupReq){
-//        memberService.consumerSignup(memberSignupReq);
-
-        return ResponseEntity.ok().body(memberService.consumerSignup(memberSignupReq));
+    public ResponseEntity consumerSignup(@RequestPart ConsumerSignupReq memberSignupReq, MultipartFile profileImage){
+        return ResponseEntity.ok().body(memberService.consumerSignup(memberSignupReq, profileImage));
     }
     @RequestMapping(method = RequestMethod.POST, value = "/seller/signup")
     public ResponseEntity sellerSignup(@RequestPart SellerSignupReq sellerSignupReq, @RequestPart MultipartFile image){
-//        memberService.sellerSignup(sellerSignupReq);
-
         return ResponseEntity.ok().body(memberService.sellerSignup(sellerSignupReq,image));
     }
 
-
     @RequestMapping(method = RequestMethod.POST, value = "/consumer/login")
     public ResponseEntity memberLogin(@RequestBody ConsumerLoginReq consumerLoginReq){
-
-
         return ResponseEntity.ok().body(memberService.consumerLogin(consumerLoginReq));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/seller/login")
     public ResponseEntity sellerLogin(@RequestBody SellerLoginReq sellerLoginReq){
-
         return ResponseEntity.ok().body(memberService.sellerLogin(sellerLoginReq));
     }
     @RequestMapping(method = RequestMethod.PATCH, value = "/consumer/update")
@@ -70,7 +62,6 @@ public class MemberController {
 
     @RequestMapping(method = RequestMethod.GET,value = "confirm")
     public RedirectView confirm(GetEmailConfirmReq getEmailConfirmReq){
-
         return emailVerifyService.verify(getEmailConfirmReq);
 
     }

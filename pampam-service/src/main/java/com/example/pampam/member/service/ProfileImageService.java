@@ -1,11 +1,10 @@
-package com.example.demo.sellerimage.adapter.out.aws;
+package com.example.pampam.member.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.example.demo.common.ExternalSystemAdapter;
-import com.example.demo.sellerimage.application.port.out.SellerImageUploadPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -15,30 +14,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-@ExternalSystemAdapter
+@Service
 @RequiredArgsConstructor
-public class SellerImageUploadAdapter implements SellerImageUploadPort {
+public class ProfileImageService {
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-
-
     private final AmazonS3 s3;
 
-    @Override
-    public String uploadSellerImage(MultipartFile file) {
-        String imagePath = uplopadFile(file);
-
-        return imagePath;
+    public String saveProfileImage(MultipartFile profileImage) {
+        return uploadFile(profileImage);
     }
 
-
-    public String makeFolder() {
+    private String makeFolder() {
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String folderPath = str.replace("/", File.separator);
 
         return folderPath;
     }
-    public String uplopadFile(MultipartFile file) {
+    private String uploadFile(MultipartFile file) {
         String originalName = file.getOriginalFilename();
         String folderPath = makeFolder();
         String uuid = UUID.randomUUID().toString();

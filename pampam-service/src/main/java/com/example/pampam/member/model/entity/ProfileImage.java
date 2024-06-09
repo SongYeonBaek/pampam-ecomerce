@@ -1,19 +1,12 @@
-package com.example.demo.sellerimage.adapter.out.persistence;
-
-import lombok.*;
+package com.example.pampam.member.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Getter
-@Setter
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SellerImageJpaEntity {
+public class ProfileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

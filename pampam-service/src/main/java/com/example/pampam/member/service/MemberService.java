@@ -35,22 +35,18 @@ public class MemberService implements UserDetailsService {
     private final ConsumerRepository consumerRepository;
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
-    private final AmazonS3 s3;
+    private final ProfileImageService profileImageService;
+
     @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
 
-    @Value("${project.upload.path}")
-    private String uploadPath;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-@Transactional
-    public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq) {
+    @Transactional
+    public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq, MultipartFile profileImage) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
             return BaseResponse.failResponse(7000, "요청실패");
         }
@@ -73,7 +69,7 @@ public class MemberService implements UserDetailsService {
                 .accessToken(accessToken)
                 .build();
 
-        sendEmail(sendEmailReq);
+        emailVerifyService.sendEmail(sendEmailReq);
         Optional<Consumer> result = consumerRepository.findByEmail(consumer.getEmail());
 
         if (result.isPresent()){
@@ -97,46 +93,11 @@ public class MemberService implements UserDetailsService {
         return baseResponse;
 
     }
-    public String makeFolder() {
-        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        String folderPath = str.replace("/", File.separator);
-        File uploadPathFolder = new File(uploadPath, folderPath);
-        if (uploadPathFolder.exists() == false) {
-            uploadPathFolder.mkdirs();
-        }
-
-        return folderPath;
-    }
-
-    public String saveFile(MultipartFile file) {
-        String originalName = file.getOriginalFilename();
-        String folderPath = makeFolder();
-        String uuid = UUID.randomUUID().toString();
-        String saveFileName = folderPath + File.separator + uuid + "_" + originalName;
-//        File saveFile = new File(uploadPath, saveFileName);
-
-        try {
-//            file.transferTo(saveFile);
-
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
-            metadata.setContentType(file.getContentType());
-
-            s3.putObject(bucket, saveFileName.replace(File.separator, "/"), file.getInputStream(), metadata);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
-    }
     public BaseResponse sellerSignup(SellerSignupReq sellerSignupReq, MultipartFile image) {
-
-        String saveFileName = saveFile(image);
-
         if (sellerRepository.findByEmail(sellerSignupReq.getEmail()).isPresent()) {
             return BaseResponse.failResponse(7000, "요청실패");
         }
+        String saveFileName = profileImageService.saveProfileImage(image);
         Seller seller = sellerRepository.save(Seller.builder()
                 .email(sellerSignupReq.getEmail())
                 .sellerPW(passwordEncoder.encode(sellerSignupReq.getSellerPW()))
@@ -146,7 +107,7 @@ public class MemberService implements UserDetailsService {
                 .sellerBusinessNumber(sellerSignupReq.getSellerBusinessNumber())
                 .authority("SELLER")
                 .status(false)
-                        .image(saveFileName)
+                .image(saveFileName)
                 .build());
 
         String accessToken = JwtUtils.generateAccessToken(seller, secretKey, expiredTimeMs);
@@ -157,7 +118,7 @@ public class MemberService implements UserDetailsService {
                 .accessToken(accessToken)
                 .build();
 
-        sendEmail(sendEmailReq);
+        emailVerifyService.sendEmail(sendEmailReq);
         SellerSignupRes sellerSignupRes = SellerSignupRes.builder()
                 .sellerIdx(seller.getSellerIdx())
                 .email(seller.getEmail())
@@ -173,24 +134,17 @@ public class MemberService implements UserDetailsService {
                 .build();
 
         BaseResponse baseResponse = BaseResponse.successResponse("요청성공", sellerSignupRes);
-
         return baseResponse;
-
     }
 
     public BaseResponse consumerLogin(ConsumerLoginReq consumerLoginReq) {
         Optional<Consumer> consumer = consumerRepository.findByEmail(consumerLoginReq.getEmail());
-
         if (consumer.isPresent()) {
             if (passwordEncoder.matches(consumerLoginReq.getPassword(), consumer.get().getPassword())) {
-
                 ConsumerLoginRes consumerLoginRes = ConsumerLoginRes.builder()
                         .token(JwtUtils.generateAccessToken(consumer.get(), secretKey, expiredTimeMs))
                         .build();
-
                 BaseResponse baseResponse = BaseResponse.successResponse("요청성공", consumerLoginRes);
-
-
                 return baseResponse;
             }else {
                 return BaseResponse.failResponse(7000, "요청실패");
@@ -201,17 +155,12 @@ public class MemberService implements UserDetailsService {
 
     public BaseResponse sellerLogin(SellerLoginReq sellerLoginReq) {
         Optional<Seller> seller = sellerRepository.findByEmail(sellerLoginReq.getEmail());
-
         if (seller.isPresent()) {
             if (passwordEncoder.matches(sellerLoginReq.getPassword(), seller.get().getPassword())) {
-
                 SellerLoginRes sellerLoginRes = SellerLoginRes.builder()
                         .token(JwtUtils.generateAccessToken(seller.get(), secretKey, expiredTimeMs))
                         .build();
-
                 BaseResponse baseResponse = BaseResponse.successResponse("요청성공",sellerLoginRes);
-
-
                 return  baseResponse;
             }else {
                 return BaseResponse.failResponse(7000, "요청실패");
@@ -302,13 +251,10 @@ public class MemberService implements UserDetailsService {
 
     public BaseResponse consumerDelete(ConsumerDeleteReq consumerDeleteReq) {
         Optional<Consumer> result = consumerRepository.findByEmail(consumerDeleteReq.getEmail());
-
         if (result.isPresent()) {
             consumerRepository.delete(Consumer.builder()
                     .consumerIdx(result.get().getConsumerIdx()).build());
-
             ConsumerDeleteRes consumerDeleteRes = ConsumerDeleteRes.builder().email(consumerDeleteReq.getEmail()).build();
-
             return BaseResponse.successResponse("요청성공", consumerDeleteRes);
         }
         return BaseResponse.failResponse(7000, "요청실패");
@@ -328,33 +274,9 @@ public class MemberService implements UserDetailsService {
         return BaseResponse.failResponse(7000, "요청실패");
 
     }
-    public void sendEmail(SendEmailReq sendEmailReq) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(sendEmailReq.getEmail());
-        message.setSubject("로컬푸드 pampam 이메일 인증");
-        String uuid = UUID.randomUUID().toString();
-        message.setText("http://localhost:8080/member/confirm?email="
-                + sendEmailReq.getEmail()
-                + "&authority=" + sendEmailReq.getAuthority()
-                + "&token=" + uuid
-                + "&jwt=" + sendEmailReq.getAccessToken()
-        );
-        emailSender.send(message);
-        emailVerifyService.create(sendEmailReq.getEmail(), uuid);
-    }
-
 
     public Consumer getMemberByConsumerID(String email) {
         Optional<Consumer> result = consumerRepository.findByEmail(email);
-        if(result.isPresent()){
-            return result.get();
-        }
-        return null;
-    }
-
-    //
-    public Seller getMemberBySellerID(String email) {
-        Optional<Seller> result = sellerRepository.findByEmail(email);
         if(result.isPresent()){
             return result.get();
         }

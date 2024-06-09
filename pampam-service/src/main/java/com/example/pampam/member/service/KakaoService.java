@@ -107,11 +107,4 @@ public class KakaoService {
                 .build());
         return consumer;
     }
-//    public Consumer getKakaoByEmail(GetKakaoByEmailReq getKakaoByEmailReq) {
-//        Optional<Consumer> result = consumerRepository.findByEmail(getKakaoByEmailReq.getEmail());
-//        if (result.isPresent()) {
-//            return result.get();
-//        }
-//        return null;
-//    }
 }
