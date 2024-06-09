@@ -50,16 +50,19 @@ public class MemberService implements UserDetailsService {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {
             return BaseResponse.failResponse(7000, "요청실패");
         }
-        Consumer consumer = consumerRepository.save(Consumer.builder()
-                .email(consumerSignupReq.getEmail())
-                .consumerPW(passwordEncoder.encode(consumerSignupReq.getConsumerPW()))
-                .consumerName(consumerSignupReq.getConsumerName())
-                .consumerAddr(consumerSignupReq.getConsumerAddr())
-                .consumerPhoneNum(consumerSignupReq.getConsumerPhoneNum())
-                .authority("CONSUMER")
-                .socialLogin(false)
-                .status(false)
-                .build());
+
+        Consumer consumer = consumerRepository.save(Consumer.buildConsumer(consumerSignupReq, passwordEncoder.encode(consumerSignupReq.getConsumerPW())));
+
+//        Consumer consumer = consumerRepository.save(Consumer.builder()
+//                .email(consumerSignupReq.getEmail())
+//                .consumerPW(passwordEncoder.encode(consumerSignupReq.getConsumerPW()))
+//                .consumerName(consumerSignupReq.getConsumerName())
+//                .consumerAddr(consumerSignupReq.getConsumerAddr())
+//                .consumerPhoneNum(consumerSignupReq.getConsumerPhoneNum())
+//                .authority("CONSUMER")
+//                .socialLogin(false)
+//                .status(false)
+//                .build());
 
         String accessToken = JwtUtils.generateAccessToken(consumer, secretKey, expiredTimeMs);
 
