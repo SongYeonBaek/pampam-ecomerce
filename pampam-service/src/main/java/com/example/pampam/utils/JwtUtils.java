@@ -13,8 +13,6 @@ import java.util.Date;
 
 public class JwtUtils {
 
-
-
     public static String generateAccessToken(Consumer member, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("email", member.getEmail());

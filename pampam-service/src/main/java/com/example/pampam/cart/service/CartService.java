@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
-    private final ConsumerRepository consumerRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
