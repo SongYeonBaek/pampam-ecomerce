@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(value = "상품 컨트롤러 v1", tags = "상품 API")
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
     @ApiOperation(value = "상품 등록")
@@ -25,7 +26,7 @@ public class ProductController {
             @ApiImplicitParam(name = "productRegisterReq", paramType = "query", value = "등록할 상품 정보", required = true)
     })
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart MultipartFile[] images) {
+    public ResponseEntity<Object> register(@RequestHeader(value = "Authorization") String token, @RequestPart PostProductRegisterReq productRegisterReq, @RequestPart(required = false) MultipartFile[] images) {
         return ResponseEntity.ok().body(productService.register(token, productRegisterReq, images));
     }
 
@@ -38,8 +39,8 @@ public class ProductController {
             @ApiImplicitParam(name = "size", value = "조회 할 상품의 개수",
                     required = true, dataType = "Integer", paramType = "query", defaultValue = "")})
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<Object> list(@RequestHeader(value = "Authorization") String token, Integer page, Integer size) {
-        return ResponseEntity.ok().body(productService.list(token,page, size));
+    public ResponseEntity<Object> list(Integer page, Integer size) {
+        return ResponseEntity.ok().body(productService.list(page, size));
     }
 
     @ApiOperation(value = "상품 조회")
@@ -48,8 +49,8 @@ public class ProductController {
             @ApiImplicitParam(name = "idx", value = "조회 할 상품 번호",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")})
     @GetMapping("/read/{idx}")
-    public ResponseEntity<Object> read(@RequestHeader(value = "Authorization") String token, @PathVariable Long idx) {
-        return ResponseEntity.ok().body(productService.read(token,idx));
+    public ResponseEntity<Object> read(@PathVariable Long idx) {
+        return ResponseEntity.ok().body(productService.read(idx));
     }
 
     //RequestPart => 포스트맨에서 multipart/form-data가 포함되어 있는 경우에 사용/ Json 데이터의 입력을 위함

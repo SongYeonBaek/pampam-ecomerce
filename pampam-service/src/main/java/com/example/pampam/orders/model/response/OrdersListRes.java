@@ -13,15 +13,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrdersListRes {
-    private Long idx;
+    private String impUid;
     private LocalDate orderDate;
     private String productName;
+    private Integer amount;
 
     public static OrdersListRes dtoToEntity(Orders orders, Product product) {
         return OrdersListRes.builder()
-                .idx(orders.getIdx())
+                .impUid(orders.getImpUid())
                 .orderDate(orders.getOrderDate())
                 .productName(product.getProductName())
+                .amount(orders.getPrice())
                 .build();
     }
 }

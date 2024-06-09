@@ -7,6 +7,7 @@ import com.example.pampam.member.model.entity.Seller;
 import com.example.pampam.member.repository.SellerRepository;
 import com.example.pampam.product.model.entity.Product;
 import com.example.pampam.product.model.entity.ProductImage;
+import com.example.pampam.utils.ProductType;
 import com.example.pampam.product.model.request.PatchProductUpdateReq;
 import com.example.pampam.product.model.request.PostProductRegisterReq;
 import com.example.pampam.product.model.response.GetProductReadRes;
@@ -41,7 +42,8 @@ public class ProductService {
         Claims sellerInfo = JwtUtils.getSellerInfo(token, secretKey);
 
         if (sellerInfo.get("authority", String.class).equals("SELLER")) {
-            Product product = productRepository.save(Product.dtoToEntity(productRegisterReq, sellerInfo));
+            String type = ProductType.findType().get(productRegisterReq.getProductType());
+            Product product = productRepository.save(Product.dtoToEntity(productRegisterReq, type, sellerInfo));
             for (MultipartFile uploadFile : images) {
                 String uploadPath = imageSaveService.uploadFile(uploadFile);
                 imageSaveService.saveFile(product.getIdx(), uploadPath);
@@ -56,64 +58,41 @@ public class ProductService {
     }
 
     // TODO: 상품 전체 조회
-    public BaseResponse<Object> list(String token, Integer page, Integer size) {
-        token = JwtUtils.replaceToken(token);
-        String email = JwtUtils.getUsername(token, secretKey);
-        Optional<Seller> seller = sellerRepository.findByEmail(email);
-
-        if (seller.isPresent()) {
-            System.out.println("인증된 접근입니다.");
-        } else throw new EcommerceApplicationException(
-                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
-
+    public BaseResponse<Object> list(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page-1,size);
         Page<Product> result = productRepository.findList(pageable);
-
+        List<String> file = new ArrayList<>();
         List<GetProductReadRes> productReadResList = new ArrayList<>();
 
         for (Product product : result.getContent()) {
 
             List<ProductImage> productImages = product.getImages();
 
-            String filenames = "";
             for (ProductImage productImage : productImages) {
-                String filename = productImage.getImagePath();
-                filenames += filename + ",";
+                file.add(productImage.getImagePath());
             }
-            filenames = filenames.substring(0, filenames.length() - 1);
 
-
-            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, file);
             productReadResList.add(getProductReadRes);
         }
         // DtoToRes
         return BaseResponse.successResponse("요청 성공", productReadResList);
     }
 
-    public BaseResponse<GetProductReadRes> read(String token, Long idx) {
-        token = JwtUtils.replaceToken(token);
-        String email = JwtUtils.getUsername(token, secretKey);
-        Optional<Seller> seller = sellerRepository.findByEmail(email);
-
-        if(seller.isPresent()) {
-            System.out.println("인증된 접근입니다.");
-        } else throw new EcommerceApplicationException(
-                ErrorCode.USER_NOT_FOUND, String.format("%s을 찾을 수 없습니다.", email), ErrorCode.USER_NOT_FOUND.getCode());
+    public BaseResponse<GetProductReadRes> read(Long idx) {
 
         Optional<Product> result = productRepository.findById(idx);
 
         if (result.isPresent()) {
             Product product = result.get();
-
+            List<String> file = new ArrayList<>();
             List<ProductImage> productImages = product.getImages();
 
-            String filenames = "";
             for (ProductImage productImage : productImages) {
-                String filename = productImage.getImagePath();
-                filenames += filename + ",";
+                file.add(productImage.getImagePath());
             }
-            filenames = filenames.substring(0, filenames.length() - 1);
-            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, filenames);
+
+            GetProductReadRes getProductReadRes = GetProductReadRes.entityToDto(product, file);
 
             return BaseResponse.successResponse("요청 성공", getProductReadRes);
         }

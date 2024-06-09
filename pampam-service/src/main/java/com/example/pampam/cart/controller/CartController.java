@@ -25,7 +25,7 @@ public class CartController {
             @ApiImplicitParam(name = "productIdx", value = "장바구니에 넣을 상품 번호 입력",
                     required = true, paramType = "query", dataType = "Long", defaultValue = "")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/in/{productIdx}")
+    @RequestMapping(method = RequestMethod.GET, value = "/in/{productIdx}")
     public ResponseEntity<Object> cartIn(@RequestHeader(value = "Authorization") String token, @PathVariable Long productIdx) {
         return ResponseEntity.ok().body(cartService.cartIn(productIdx, token));
     }

@@ -35,10 +35,6 @@ public class Orders {
     @Column(nullable=false)
     private Integer price;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "Consumer_idx")
-//    private Consumer consumer;
-
     //msa member 빼내기
     private Long consumerId;
     private String consumerEmail;
@@ -50,10 +46,11 @@ public class Orders {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     private List<OrderedProduct> orderProductsList = new ArrayList<>();
 
-    public static Orders dtoToEntity(String impUid, String email, Integer amount) {
+    public static Orders dtoToEntity(String impUid, String userEmail, Long consumerId, Integer amount) {
         return Orders.builder()
+                .consumerEmail(userEmail)
                 .impUid(impUid)
-                .consumerEmail(email)
+                .consumerId(consumerId)
                 .price(amount)
                 .orderDate(LocalDate.now())
                 .build();

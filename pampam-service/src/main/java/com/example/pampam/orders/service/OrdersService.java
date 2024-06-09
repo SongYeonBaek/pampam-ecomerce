@@ -1,5 +1,7 @@
 package com.example.pampam.orders.service;
 
+import com.example.pampam.cart.model.entity.Cart;
+import com.example.pampam.cart.repository.CartRepository;
 import com.example.pampam.common.BaseResponse;
 import com.example.pampam.exception.EcommerceApplicationException;
 import com.example.pampam.exception.ErrorCode;
@@ -24,6 +26,7 @@ import com.siot.IamportRestClient.response.Payment;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,8 +41,8 @@ public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final OrderedProductRepository orderedProductRepository;
     private final PaymentService paymentService;
-    private final ConsumerRepository consumerRepository;
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -54,19 +57,26 @@ public class OrdersService {
 
         List<PostOrderInfoRes> orderList = new ArrayList<>();
 
-        Optional<Consumer> result = consumerRepository.findByEmail(token);
-        if(result.isPresent()) {
-            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, token, amount));
+        token = JwtUtils.replaceToken(token);
+        Long consumerIdx = JwtUtils.getUserIdx(token, secretKey);
+        String userEmail = JwtUtils.getUsername(token, secretKey);
+
+        if (consumerIdx != null) {
+            //카트에서 삭제
+            cartRepository.deleteAllByConsumerIdx(consumerIdx);
+
+            Orders order = ordersRepository.save(Orders.dtoToEntity(impUid, userEmail, consumerIdx, amount));
 
             //Custom Data 안에 있던 Product 리스트 하나씩 꺼내와서 OrderedProduct에 저장
             for (GetPortOneRes getPortOneRes : paymentProducts.getProducts()) {
                 orderedProductRepository.save(OrderedProduct.dtoToEntity(order, getPortOneRes));
-
-                orderList.add(PostOrderInfoRes.dtoToEntity(impUid, getPortOneRes, order));
+                orderList.add(PostOrderInfoRes.dtoToEntity(order.getIdx(), impUid, getPortOneRes, order));
             }
+
             return BaseResponse.successResponse("주문 완료", orderList);
+        } else {
+            throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
         }
-        throw new EcommerceApplicationException(ErrorCode.USER_NOT_FOUND);
     }
 
     public BaseResponse<List<OrdersListRes>> orderList(String token) {
@@ -74,6 +84,7 @@ public class OrdersService {
         Claims consumerInfo = JwtUtils.getConsumerInfo(token, secretKey);
         String email = consumerInfo.get("email", String.class);
         List<OrdersListRes> result = new ArrayList<>();
+
         if (email != null) {
             List<Orders> orders = ordersRepository.findAllByConsumerEmail(email);
             for(Orders order :orders){

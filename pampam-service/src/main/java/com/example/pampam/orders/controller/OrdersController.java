@@ -10,10 +10,9 @@ import com.example.pampam.orders.service.PaymentService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import java.util.List;
 @Api(value = "주문/결제 컨트롤러 v1", tags = "주문/결제 API")
 @RequiredArgsConstructor
 @RequestMapping("/order")
+@CrossOrigin("*")
 public class OrdersController {
     private final OrdersService ordersService;
     private final PaymentService paymentService;
@@ -31,7 +31,7 @@ public class OrdersController {
                     required = true, paramType = "query", dataType = "string", defaultValue = ""),
             @ApiImplicitParam(name = "impUid", value = "주문 번호 입력",
                     required = true, paramType = "query", dataType = "string", defaultValue = "")})
-    @RequestMapping(method = RequestMethod.POST,value = "/validation")
+    @RequestMapping(method = RequestMethod.GET,value = "/validation")
     public BaseResponse<List<PostOrderInfoRes>> ordersCreate(@RequestHeader(value = "Authorization") String token, String impUid){
         try{
             //주문의 유효성 검사
