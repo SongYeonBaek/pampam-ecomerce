@@ -1,11 +1,10 @@
 package com.example.pampam.category.controller;
 
+import com.example.pampam.category.model.request.PostRegisterCategory;
 import com.example.pampam.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,13 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<Object> getCategories() {
-        return ResponseEntity.ok().body(categoryService.getCategories());
+    @RequestMapping(method = RequestMethod.GET, value = "/search/type/{categoryType}")
+    public ResponseEntity<Object> searchRegion(@PathVariable String categoryType) {
+        return ResponseEntity.ok().body(categoryService.searchRegion(categoryType));
     }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity<Object> registerCategory() {
-        return ResponseEntity.ok().body(categoryService.registerCategory());
+    @RequestMapping(method = RequestMethod.POST, value = "/insert/{productIdx}")
+    public ResponseEntity<Object> insertCategory(@PathVariable Long productIdx, @RequestBody PostRegisterCategory categoryType) {
+        return ResponseEntity.ok().body(categoryService.insertCategory(productIdx, categoryType));
     }
 }

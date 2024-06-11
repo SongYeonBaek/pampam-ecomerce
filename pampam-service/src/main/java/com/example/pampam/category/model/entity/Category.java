@@ -1,11 +1,9 @@
 package com.example.pampam.category.model.entity;
 
+import com.example.pampam.product.model.entity.Product;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Builder
@@ -19,7 +17,10 @@ public class Category {
     private Long idx;
     private String categoryType;
 
-    public static Category buildCategory() {
-        return Category.builder().build();
+    @OneToOne(mappedBy = "category")
+    private Product product;
+
+    public static Category buildCategory(String categoryType) {
+        return Category.builder().categoryType(categoryType).build();
     }
 }
