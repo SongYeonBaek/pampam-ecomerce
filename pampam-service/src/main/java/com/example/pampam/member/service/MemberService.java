@@ -44,7 +44,6 @@ public class MemberService implements UserDetailsService {
     @Value("${jwt.token.expired-time-ms}")
     private int expiredTimeMs;
 
-
     @Transactional
     public BaseResponse consumerSignup(ConsumerSignupReq consumerSignupReq, MultipartFile profileImage) {
         if (consumerRepository.findByEmail(consumerSignupReq.getEmail()).isPresent()) {

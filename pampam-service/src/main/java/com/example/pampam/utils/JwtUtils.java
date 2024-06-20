@@ -1,24 +1,25 @@
 package com.example.pampam.utils;
 
-
 import com.example.pampam.member.model.entity.Consumer;
 import com.example.pampam.member.model.entity.Seller;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.websocket.DecodeException;
 import java.security.Key;
 import java.util.Date;
 
+//@Component
 public class JwtUtils {
-
-
-
     public static String generateAccessToken(Consumer member, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("email", member.getEmail());
         claims.put("idx", member.getConsumerIdx());
+        claims.put("authority", member.getAuthority());
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -34,6 +35,7 @@ public class JwtUtils {
         Claims claims = Jwts.claims();
         claims.put("email", seller.getEmail());
         claims.put("idx", seller.getSellerIdx());
+        claims.put("authority", seller.getAuthority());
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -67,6 +69,10 @@ public class JwtUtils {
         return extractAllClaims(token, key).get("idx", Long.class);
     }
 
+    public static String getAuthority(String token, String key) {
+        return extractAllClaims(token, key).get("authority", String.class);
+    }
+
     public static Claims getSellerInfo(String token, String key) {
         return extractAllClaims(token, key);
     }
@@ -76,6 +82,8 @@ public class JwtUtils {
     }
 
     public static Claims extractAllClaims(String token, String key) {
+        System.out.println("key = " + key);
+
         return Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(key.getBytes()))
                 .build()

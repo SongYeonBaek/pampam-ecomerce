@@ -3,6 +3,8 @@ package com.example.pampam.config;
 
 
 import com.example.pampam.member.service.MemberService;
+import com.example.pampam.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final MemberService memberService;
 
-    public SecurityConfig(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
     @Value("${jwt.secret-key}")
     private String secretKey;
+
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
@@ -38,8 +38,13 @@ public class SecurityConfig {
                     .antMatchers("/**").permitAll()
                     .anyRequest().authenticated();
             http.formLogin().disable();
+
+            // custom filter chain 추가
+            http.addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class);
+
             http.sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
             return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);

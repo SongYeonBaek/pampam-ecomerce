@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport implements ProductRepositoryCustom {
+public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport implements com.example.pampam.product.repository.querydsl.ProductRepositoryCustom {
     public ProductRepositoryCustomImpl() {
         super(Product.class);
     }

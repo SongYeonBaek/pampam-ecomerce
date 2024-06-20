@@ -81,7 +81,7 @@ public class ProductService {
 
     public BaseResponse<GetProductReadRes> read(Long idx) {
 
-        Optional<Product> result = productRepository.findById(idx);
+        Optional<Product> result = productRepository.findById (idx);
 
         if (result.isPresent()) {
             Product product = result.get();
