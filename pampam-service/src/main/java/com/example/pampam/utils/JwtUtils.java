@@ -12,13 +12,11 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtils {
-
-
-
     public static String generateAccessToken(Consumer member, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("email", member.getEmail());
         claims.put("idx", member.getConsumerIdx());
+        claims.put("authority", member.getAuthority());
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -34,6 +32,7 @@ public class JwtUtils {
         Claims claims = Jwts.claims();
         claims.put("email", seller.getEmail());
         claims.put("idx", seller.getSellerIdx());
+        claims.put("authority", seller.getAuthority());
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -73,6 +72,10 @@ public class JwtUtils {
 
     public static Claims getConsumerInfo(String token, String key) {
         return extractAllClaims(token, key);
+    }
+
+    public static String getAuthority(String token, String key) {
+        return extractAllClaims(token, key).get("authority", String.class);
     }
 
     public static Claims extractAllClaims(String token, String key) {
