@@ -12,7 +12,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(3000, HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."),
     INVALID_TOKEN(3000, HttpStatus.UNAUTHORIZED, "인증되지 않은 토큰입니다."),
     INVALID_PASSWORD(3000, HttpStatus.UNAUTHORIZED, "비밀번호가 틀립니다."),
-
+    NOT_MATCH_AUTHORITY(3000, HttpStatus.FORBIDDEN, "접근할 수 없는 사용자입니다."),
 
 
     DUPLICATE_PRODUCT(5000, HttpStatus.CONFLICT, "이미 존재하는 상품입니다."),

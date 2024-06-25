@@ -1,4 +1,7 @@
 spring:
+  sql:
+    init:
+      mode: always
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -29,6 +32,7 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+    defer-datasource-initialization: true
 
 jwt:
   secret-key: ${JWT_TOKEN}

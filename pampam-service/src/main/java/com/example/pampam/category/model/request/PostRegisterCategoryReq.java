@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostRegisterCategory {
+public class PostRegisterCategoryReq {
     private String categoryType;
 }
